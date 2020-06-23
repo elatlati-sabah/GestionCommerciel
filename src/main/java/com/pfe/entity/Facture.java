@@ -27,7 +27,7 @@ public class Facture {
 	@Column
 	private String valider;
 	@Column
-	private String tva;
+	private int tva;
 	@Column
 	private int factureCounter;
 	@OneToMany(mappedBy="facture")
@@ -35,8 +35,9 @@ public class Facture {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_client")
 	private Client client;
-	
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_produit")
+	private Produit produitfact;
 	public long getId_facture() {
 		return id_facture;
 	}
@@ -55,10 +56,10 @@ public class Facture {
 	public void setValider(String valider) {
 		this.valider = valider;
 	}
-	public String getTva() {
+	public int getTva() {
 		return tva;
 	}
-	public void setTva(String tva) {
+	public void setTva(int tva) {
 		this.tva = tva;
 	}
 	public int getFactureCounter() {
@@ -79,7 +80,7 @@ public class Facture {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	public Facture(long id_facture, Date dateFacturation, String valider, String tva, int factureCounter,
+	public Facture(long id_facture, Date dateFacturation, String valider, int tva, int factureCounter,
 			List<DetailsFacture> detailsfacture, Client client) {
 		super();
 		this.id_facture = id_facture;
@@ -92,6 +93,18 @@ public class Facture {
 	}
 	public Facture() {
 		
+	}
+	public List<DetailsFacture> getDetailsfactures() {
+		return detailsfactures;
+	}
+	public void setDetailsfactures(List<DetailsFacture> detailsfactures) {
+		this.detailsfactures = detailsfactures;
+	}
+	public Produit getProduitfact() {
+		return produitfact;
+	}
+	public void setProduitfact(Produit produitfact) {
+		this.produitfact = produitfact;
 	}
 	
 	

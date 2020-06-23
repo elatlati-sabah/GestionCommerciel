@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
 import com.pfe.exception.ResourceNotFoundException;
 import com.pfe.repository.SocieteRepository;

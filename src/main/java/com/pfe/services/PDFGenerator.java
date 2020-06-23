@@ -5,11 +5,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.apache.poi.ss.formula.eval.StringValueEval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringValueResolver;
+
+import com.github.royken.converter.FrenchNumberToWords;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -24,6 +29,7 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import com.pfe.entity.Client;
 import com.pfe.entity.DetailsFacture;
 import com.pfe.entity.Facture;
@@ -33,6 +39,9 @@ import com.pfe.entity.Societe;
 
 public class PDFGenerator {
 	
+	private static int sommef;
+	private static int tva;
+	private static int prixttc;
 	private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
 	  
 	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits) {
@@ -45,34 +54,61 @@ public class PDFGenerator {
 	            document.open();
 	          
 	            // Add Text to PDF file ->
-	          Font font = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
+	          Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
 	          Paragraph para = new Paragraph( "OPEN ITC sarl", font);
 	          para.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(para);
 	          document.add(Chunk.NEWLINE);
+	          //informations societe
+	          Font fontadd = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+	          Paragraph paraadd = new Paragraph( "Adresse :", fontadd);
+	          paraadd.setAlignment(Element.ALIGN_RIGHT);
+	          document.add(paraadd);
 	          
+	          
+	          Font fonttel1 = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
+	          Paragraph paratel1 = new Paragraph( "Téléphone1 :", font);
+	          paratel1.setAlignment(Element.ALIGN_RIGHT);
+	          document.add(paratel1);
+	         
+	          
+	          Font fonttel2 = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
+	          Paragraph paratel2 = new Paragraph( "Téléphone1 :0655741099", font);
+	          paratel2.setAlignment(Element.ALIGN_RIGHT);
+	          document.add(paratel2);
+	          document.add(Chunk.NEWLINE);
+	          Chunk linebreak1 = new Chunk(new DottedLineSeparator());
+	          document.add(linebreak1);
 	          	// Add facture fields 
 	          Facture facture = new Facture();
 	          Paragraph parafact = new Paragraph( "Facture N°:"+facture.getFactureCounter(), font);
-	          para.setAlignment(Element.ALIGN_RIGHT);
+	          parafact.setAlignment(Element.ALIGN_LEFT);
 	          document.add(parafact);
 	          document.add(Chunk.NEWLINE);
 	          //Add Client Informations
 	          Client client = new Client();
+	          
 	          Paragraph parainfo = new Paragraph( "Informations du client:", font);
-	          para.setAlignment(Element.ALIGN_RIGHT);
+	          parainfo.setAlignment(Element.ALIGN_LEFT);
 	          document.add(parainfo);
 	          document.add(Chunk.NEWLINE);
 	           
 	          Paragraph paraclient = new Paragraph( "Client:"+client.getId_client(), font);
-	          para.setAlignment(Element.ALIGN_RIGHT);
+	          parafact.setAlignment(Element.ALIGN_LEFT);
 	          document.add(paraclient);
-	          document.add(Chunk.NEWLINE);
+	         
 	          
 	          Paragraph paraIce = new Paragraph( "ICE:"+client.getIce(), font);
-	          para.setAlignment(Element.ALIGN_RIGHT);
+	          paraIce.setAlignment(Element.ALIGN_LEFT);
 	          document.add(paraIce);
+	          Date date =new Date();
+	          Paragraph paraDate = new Paragraph( "Date:"+date.toGMTString(), font);
+	          paraDate.setAlignment(Element.ALIGN_RIGHT);
+	          document.add(paraDate);
 	          document.add(Chunk.NEWLINE);
+	          document.add(Chunk.NEWLINE);
+	         
+	          
 	          //add logo to pdf file 
 	          try {
 				Image logo = Image.getInstance("open.jpg");
@@ -94,7 +130,7 @@ public class PDFGenerator {
 	                  Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 	                  header.setBackgroundColor(new BaseColor(232, 232, 232));
 	                  header.setHorizontalAlignment(Element.ALIGN_CENTER);
-	                  header.setBorderWidth(2);
+	                  header.setBorderWidth(1);
 	                  header.setPhrase(new Phrase(headerTitle, headFont));
 	                  table.addCell(header);
 	              });
@@ -105,11 +141,8 @@ public class PDFGenerator {
 	              idCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	              idCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	                table.addCell(idCell);
-	             /* for(Detailsfac customer : user.getLiCustomer() ) {
-	            	  System.out.println(customer.getFirstName());
-	              }
+	             
 	
-	                PdfPCell firstNameCell = new PdfPCell(new Phrase(user.getUserName()));*/
 	                PdfPCell designationCell = new PdfPCell(new Phrase(produit.getDesignation()));
 	                designationCell.setPaddingLeft(4);
 	                designationCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -133,26 +166,89 @@ public class PDFGenerator {
 	                prixtotalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	                prixtotalCell.setPaddingRight(4);
 	                table.addCell(prixtotalCell);
+	                
 	            }
 	            document.add(table);
-	            
+	            document.add(Chunk.NEWLINE);
+	            document.add(Chunk.NEWLINE);
+	         
 	            //table2
+	           
 	            PdfPTable table2 = new PdfPTable(3);
 		          // Add PDF Table Header ->
-		            Stream.of("PRIX HT", "TVA", "PRIX TTC")
+		            Stream.of("PRIX HT", "TVA 20%", "PRIX TTC")
 		              .forEach(headerTitle -> {
-		                  PdfPCell header = new PdfPCell();
+		                  PdfPCell header2 = new PdfPCell();
 		                  Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-		                  header.setBackgroundColor(new BaseColor(232, 232, 232));
-		                  header.setHorizontalAlignment(Element.ALIGN_CENTER);
-		                  header.setBorderWidth(2);
-		                  header.setPhrase(new Phrase(headerTitle, headFont));
-		                  table.addCell(header);
+		                  header2.setBackgroundColor(new BaseColor(232, 232, 232));
+		                  header2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		                  header2.setBorderWidth(2);
+		                  header2.setPhrase(new Phrase(headerTitle, headFont));
+		                  table2.addCell(header2);
 		              });
+		            //add fileds in rows table
+		            for (Produit produit : produits) {
+		            	
+		            	 int somme =0; 
+	            			somme =produit.getPrixUnitaire()*produit.getQuantite();
+	            			System.out.println(somme);
+
+	            			 sommef += somme ;
+	            			 
+	            		
+		            }
+		            System.out.println(sommef);
+		            tva = (sommef*20)/100;
+		            prixttc= sommef+tva;
+		            	PdfPCell prixht = new PdfPCell(new Phrase((String.valueOf(sommef))));
+		            	prixht.setPaddingLeft(4);
+		            	prixht.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		            	prixht.setHorizontalAlignment(Element.ALIGN_CENTER);
+		                table2.addCell(prixht);
+		               
+		                PdfPCell tvacell = new PdfPCell(new Phrase((String.valueOf(tva))));
+		                tvacell.setPaddingLeft(4);
+		                tvacell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		                tvacell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		                table2.addCell(tvacell);
+		                
+		                PdfPCell prixttcell = new PdfPCell(new Phrase(String.valueOf(prixttc)));
+		                prixttcell.setPaddingLeft(4);
+		                prixttcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		                prixttcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		                table2.addCell(prixttcell);
 		            
-		           
+	  
+	            document.add(table2);
+	            document.add(Chunk.NEWLINE);
+	            
+	            
+	            //convert montant
+	            
+	            Font fontcaractre = FontFactory.getFont(FontFactory.HELVETICA, 16, BaseColor.BLACK);
+		          Paragraph paracaractere = new Paragraph( "Arreter la présente facture à la somme de :", fontcaractre);
+		          paracaractere.setAlignment(Element.ALIGN_CENTER);
+		          document.add(paracaractere);
+		          
+		          Font blueFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, new CMYKColor(255, 0, 0, 0));
+		          Paragraph paratotal = new Paragraph( ""+ FrenchNumberToWords.convert(prixttc), blueFont);
+		          paratotal.setAlignment(Element.ALIGN_CENTER);
+		          document.add(paratotal);
+		          document.add(Chunk.NEWLINE);
+		          document.add(Chunk.NEWLINE);
+		          Chunk linebreak = new Chunk(new DottedLineSeparator());
+		          document.add(linebreak);
+		          
+		         
+		          Paragraph footer = new Paragraph( "OPEN ITC sarl", blueFont);
+		          footer.setAlignment(Element.ALIGN_CENTER);
+		          document.add(footer);
+		          document.add(Chunk.NEWLINE);
 	            document.close();
-	        }catch(DocumentException e) {
+	            
+		           
+	  }
+	        catch(DocumentException e) {
 	          logger.error(e.toString());
 	        }
 	        

@@ -59,6 +59,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+			<dependency>
+		    <groupId>com.github.royken</groupId>
+		    <artifactId>converter</artifactId>
+		    <version>1.1</version>
+			</dependency>
+		
 				<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
 		<!--  <dependency>
 		    <groupId>net.sf.jasperreports</groupId>
