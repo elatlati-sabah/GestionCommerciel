@@ -1,24 +1,27 @@
 package com.pfe.entity;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name="societe")
-public class Societe implements Serializable {
+public class Societe  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private long id;
 	@Column
 	private String titreFrancais;
-	@Column
-	private byte[] logo;
+	
 	@Column
 	private double adresseFrancais;
 	@Column
@@ -47,6 +50,11 @@ public class Societe implements Serializable {
 	private char activer;
 	@Column
 	private String serial;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_fournisseur")
+	private Fournisseur fournisseur ;
+	
 	public long getId() {
 		return id;
 	}
@@ -59,12 +67,7 @@ public class Societe implements Serializable {
 	public void setTitreFrancais(String titreFrancais) {
 		this.titreFrancais = titreFrancais;
 	}
-	public byte[] getLogo() {
-		return logo;
-	}
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
+	
 	public double getAdresseFrancais() {
 		return adresseFrancais;
 	}
@@ -151,19 +154,18 @@ public class Societe implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Societe [id=" + id + ", titreFrancais=" + titreFrancais + ", logo=" + logo + ", adresseFrancais="
+		return "Societe [id=" + id + ", titreFrancais="  + ", adresseFrancais="
 				+ adresseFrancais + ", telephone1=" + telephone1 + ", telephone2=" + telephone2 + ", TVA=" + TVA
 				+ ", icen=" + icen + ", cnss=" + cnss + ", patente=" + patente + ", rc=" + rc + ", ifData=" + ifData
 				+ ", cb=" + cb + ", login=" + login + ", password=" + password + ", activer=" + activer + ", serial="
 				+ serial + "]";
 	}
-	public Societe(int id, String titreFrancais, byte[] logo, double adresseFrancais, String telephone1,
+	public Societe(int id, String titreFrancais, Blob logo, double adresseFrancais, String telephone1,
 			String telephone2, short tVA, String icen, String cnss, String patente, String rc, String ifData, String cb,
 			String login, String password, char activer, String serial) {
 		super();
 		this.id = id;
 		this.titreFrancais = titreFrancais;
-		this.logo = logo;
 		this.adresseFrancais = adresseFrancais;
 		this.telephone1 = telephone1;
 		this.telephone2 = telephone2;

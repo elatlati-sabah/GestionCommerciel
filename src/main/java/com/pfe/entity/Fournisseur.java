@@ -84,6 +84,9 @@ public class Fournisseur {
 	public void setAchats(List<Achat> achats) {
 		this.achats = achats;
 	}
+
+
+	
 	
 	
 	

@@ -31,7 +31,7 @@ public class Facture {
 	@Column
 	private int factureCounter;
 	@OneToMany(mappedBy="facture")
-	private List<DetailsFacture> detailsfacture = new ArrayList<DetailsFacture>();
+	private List<DetailsFacture> detailsfactures = new ArrayList<DetailsFacture>();
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_client")
 	private Client client;
@@ -68,10 +68,10 @@ public class Facture {
 		this.factureCounter = factureCounter;
 	}
 	public List<DetailsFacture> getDetailsfacture() {
-		return detailsfacture;
+		return detailsfactures;
 	}
 	public void setDetailsfacture(List<DetailsFacture> detailsfacture) {
-		this.detailsfacture = detailsfacture;
+		this.detailsfactures = detailsfacture;
 	}
 	public Client getClient() {
 		return client;
@@ -87,7 +87,7 @@ public class Facture {
 		this.valider = valider;
 		this.tva = tva;
 		this.factureCounter = factureCounter;
-		this.detailsfacture = detailsfacture;
+		this.detailsfactures = detailsfacture;
 		this.client = client;
 	}
 	public Facture() {

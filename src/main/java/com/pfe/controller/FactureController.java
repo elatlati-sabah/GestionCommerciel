@@ -27,15 +27,13 @@ import com.pfe.entity.Facture;
 import com.pfe.entity.User;
 import com.pfe.repository.FactureRepository;
 import com.pfe.repository.UserRepository;
-import com.pfe.services.ExportFactureService;
 import com.pfe.services.FactureService;
 
 @RestController
 public class FactureController {
 	@Autowired
 	private FactureService factureService;
-	@Autowired
-	private ExportFactureService exportService;
+	
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -65,17 +63,5 @@ public class FactureController {
 		return HttpStatus.OK;
 	}
 
-@GetMapping("/export/pdf")
-
-public ResponseEntity<InputStreamResource> exportTermspdf()
-{
-	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	Optional<User> user = userRepository.findByUsername(authentication.getName());
-	List<Facture> facture = (List<Facture>)factureRepository.findFactureByUserId(user.get().getId());
-	ByteArrayInputStream bais = exportService.FacturePDFReport(facture);
-	HttpHeaders  headers = new HttpHeaders();
-	headers.add("Content.Disposition","inline; filename=facture.pdf");
-	return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(bais));
-}
 
 }

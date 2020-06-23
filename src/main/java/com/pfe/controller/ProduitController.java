@@ -1,6 +1,6 @@
 package com.pfe.controller;
 
-import java.io.FileNotFoundException;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.entity.Produit;
 import com.pfe.services.ProduitService;
-import com.pfe.services.ReportService;
+
 
 
 
@@ -24,8 +24,7 @@ import com.pfe.services.ReportService;
 public class ProduitController {
 	@Autowired
 	private ProduitService produitService;
-	 @Autowired
-	    private ReportService service;
+	 
 	
 	@GetMapping("/produits")
 	public ResponseEntity<List<Produit>> getAllProduit(){

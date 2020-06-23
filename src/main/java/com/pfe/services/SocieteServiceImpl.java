@@ -33,7 +33,6 @@ public class SocieteServiceImpl implements SocieteService {
 			SocieteUpdate.setIcen(societe.getIcen());
 			SocieteUpdate.setIfData(societe.getIfData());
 			SocieteUpdate.setLogin(societe.getLogin());
-			SocieteUpdate.setLogo(societe.getLogo());
 			SocieteUpdate.setPassword(societe.getPassword());
 			SocieteUpdate.setPatente(societe.getPatente());
 			SocieteUpdate.setRc(societe.getRc());

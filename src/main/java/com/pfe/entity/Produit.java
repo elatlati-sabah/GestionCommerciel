@@ -170,6 +170,15 @@ public class Produit {
 	public Produit() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Produit [id_produit=" + id_produit + ", libelle=" + libelle + ", designation=" + designation
+				+ ", prixUnitaire=" + prixUnitaire + ", codeProduit=" + codeProduit + ", initialStock=" + initialStock
+				+ ", quantite=" + quantite + ", prixAchat=" + prixAchat + ", detailachat=" + detailachat
+				+ ", categorie=" + categorie + ", detailfacture=" + detailfacture + ", detaildevis=" + detaildevis
+				+ "]";
+	}
 	
 	
 	
