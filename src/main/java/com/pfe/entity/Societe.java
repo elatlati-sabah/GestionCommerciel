@@ -1,17 +1,15 @@
 package com.pfe.entity;
 
-import java.io.Serializable;
+
 import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 @Entity
 @Table(name="societe")
 public class Societe  {
@@ -21,9 +19,10 @@ public class Societe  {
 	private long id;
 	@Column
 	private String titreFrancais;
-	
 	@Column
-	private double adresseFrancais;
+	private Blob logo;
+	@Column
+	private String adresseFrancais;
 	@Column
 	private String telephone1;
 	@Column
@@ -50,16 +49,11 @@ public class Societe  {
 	private char activer;
 	@Column
 	private String serial;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_fournisseur")
-	private Fournisseur fournisseur ;
-	
 	public long getId() {
 		return id;
 	}
-	public void setId(long l) {
-		this.id = l;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getTitreFrancais() {
 		return titreFrancais;
@@ -67,11 +61,16 @@ public class Societe  {
 	public void setTitreFrancais(String titreFrancais) {
 		this.titreFrancais = titreFrancais;
 	}
-	
-	public double getAdresseFrancais() {
+	public Blob getLogo() {
+		return logo;
+	}
+	public void setLogo(Blob logo) {
+		this.logo = logo;
+	}
+	public String getAdresseFrancais() {
 		return adresseFrancais;
 	}
-	public void setAdresseFrancais(double adresseFrancais) {
+	public void setAdresseFrancais(String adresseFrancais) {
 		this.adresseFrancais = adresseFrancais;
 	}
 	public String getTelephone1() {
@@ -152,39 +151,6 @@ public class Societe  {
 	public void setSerial(String serial) {
 		this.serial = serial;
 	}
-	@Override
-	public String toString() {
-		return "Societe [id=" + id + ", titreFrancais="  + ", adresseFrancais="
-				+ adresseFrancais + ", telephone1=" + telephone1 + ", telephone2=" + telephone2 + ", TVA=" + TVA
-				+ ", icen=" + icen + ", cnss=" + cnss + ", patente=" + patente + ", rc=" + rc + ", ifData=" + ifData
-				+ ", cb=" + cb + ", login=" + login + ", password=" + password + ", activer=" + activer + ", serial="
-				+ serial + "]";
-	}
-	public Societe(int id, String titreFrancais, Blob logo, double adresseFrancais, String telephone1,
-			String telephone2, short tVA, String icen, String cnss, String patente, String rc, String ifData, String cb,
-			String login, String password, char activer, String serial) {
-		super();
-		this.id = id;
-		this.titreFrancais = titreFrancais;
-		this.adresseFrancais = adresseFrancais;
-		this.telephone1 = telephone1;
-		this.telephone2 = telephone2;
-		TVA = tVA;
-		this.icen = icen;
-		this.cnss = cnss;
-		this.patente = patente;
-		this.rc = rc;
-		this.ifData = ifData;
-		this.cb = cb;
-		this.login = login;
-		this.password = password;
-		this.activer = activer;
-		this.serial = serial;
-	}
-	public Societe() {
-	
-	}
-	
 	
 	
 	

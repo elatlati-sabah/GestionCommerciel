@@ -52,7 +52,7 @@ public class Produit {
 	@OneToMany(mappedBy = "produitdevis")
 	private List<DetailsDevis> detaildevis = new ArrayList<DetailsDevis>();
 	@JsonIgnore
-	@OneToMany(mappedBy = "produitfact", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "produitfact")
 	private List<Facture> factures = new ArrayList<Facture>();
 	
 	public long getId_produit() {
@@ -198,7 +198,7 @@ public class Produit {
 	public void setFactures(List<Facture> factures) {
 		this.factures = factures;
 	}
-	
+
 	
 	
 }

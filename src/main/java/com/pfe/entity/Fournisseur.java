@@ -30,7 +30,6 @@ public class Fournisseur {
 	private List<Achat> achats = new ArrayList<Achat>();
 	
 	
-	
 	public Fournisseur(long id_fournisseur, String nom, String telephone, String adresse, String identifiant,
 			List<Achat> achats) {
 		super();
@@ -86,9 +85,6 @@ public class Fournisseur {
 	}
 
 
-	
-	
-	
 	
 	
 }

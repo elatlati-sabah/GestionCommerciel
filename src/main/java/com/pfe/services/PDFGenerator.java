@@ -44,7 +44,7 @@ public class PDFGenerator {
 	private static int prixttc;
 	private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
 	  
-	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits) {
+	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits, Facture factureClient, List<Societe> societes) {
 	    Document document = new Document();
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        
@@ -52,53 +52,56 @@ public class PDFGenerator {
 	          
 	          PdfWriter.getInstance(document, out);
 	            document.open();
-	          
+	          for(Societe societe : societes) {
 	            // Add Text to PDF file ->
 	          Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
-	          Paragraph para = new Paragraph( "OPEN ITC sarl", font);
+	          Paragraph para = new Paragraph( ""+societe.getTitreFrancais(), font);
 	          para.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(para);
 	          document.add(Chunk.NEWLINE);
 	          //informations societe
 	          Font fontadd = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
-	          Paragraph paraadd = new Paragraph( "Adresse :", fontadd);
+	          Paragraph paraadd = new Paragraph( "Adresse :"+societe.getAdresseFrancais(), fontadd);
 	          paraadd.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paraadd);
 	          
 	          
 	          Font fonttel1 = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
-	          Paragraph paratel1 = new Paragraph( "Téléphone1 :", font);
+	          Paragraph paratel1 = new Paragraph( "Téléphone1 :"+societe.getTelephone1(), font);
 	          paratel1.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paratel1);
 	         
 	          
 	          Font fonttel2 = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
-	          Paragraph paratel2 = new Paragraph( "Téléphone1 :0655741099", font);
+	          Paragraph paratel2 = new Paragraph( "Téléphone2 :"+societe.getTelephone2(), font);
 	          paratel2.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paratel2);
 	          document.add(Chunk.NEWLINE);
 	          Chunk linebreak1 = new Chunk(new DottedLineSeparator());
 	          document.add(linebreak1);
+	          }
 	          	// Add facture fields 
-	          Facture facture = new Facture();
-	          Paragraph parafact = new Paragraph( "Facture N°:"+facture.getFactureCounter(), font);
-	          parafact.setAlignment(Element.ALIGN_LEFT);
-	          document.add(parafact);
-	          document.add(Chunk.NEWLINE);
+	          Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+	         
+		          Paragraph parafact = new Paragraph( "Facture N°:"+factureClient.getFactureCounter(), font);
+		          parafact.setAlignment(Element.ALIGN_LEFT);
+		          document.add(parafact);
+		          document.add(Chunk.NEWLINE);
+	         
+	          
 	          //Add Client Informations
-	          Client client = new Client();
 	          
 	          Paragraph parainfo = new Paragraph( "Informations du client:", font);
 	          parainfo.setAlignment(Element.ALIGN_LEFT);
 	          document.add(parainfo);
 	          document.add(Chunk.NEWLINE);
-	           
-	          Paragraph paraclient = new Paragraph( "Client:"+client.getId_client(), font);
-	          parafact.setAlignment(Element.ALIGN_LEFT);
+	          Client client = new Client();
+	          Paragraph paraclient = new Paragraph( "Client:"+factureClient.getClient().getId_client(), font);
+	          paraclient.setAlignment(Element.ALIGN_LEFT);
 	          document.add(paraclient);
 	         
 	          
-	          Paragraph paraIce = new Paragraph( "ICE:"+client.getIce(), font);
+	          Paragraph paraIce = new Paragraph( "ICE:"+factureClient.getClient().getIce(), font);
 	          paraIce.setAlignment(Element.ALIGN_LEFT);
 	          document.add(paraIce);
 	          Date date =new Date();
@@ -108,7 +111,7 @@ public class PDFGenerator {
 	          document.add(Chunk.NEWLINE);
 	          document.add(Chunk.NEWLINE);
 	         
-	          
+	        
 	          //add logo to pdf file 
 	          try {
 				Image logo = Image.getInstance("open.jpg");
@@ -182,7 +185,7 @@ public class PDFGenerator {
 		                  Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		                  header2.setBackgroundColor(new BaseColor(232, 232, 232));
 		                  header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		                  header2.setBorderWidth(2);
+		                  header2.setBorderWidth(1);
 		                  header2.setPhrase(new Phrase(headerTitle, headFont));
 		                  table2.addCell(header2);
 		              });
@@ -198,7 +201,7 @@ public class PDFGenerator {
 	            		
 		            }
 		            System.out.println(sommef);
-		            tva = (sommef*20)/100;
+		            tva = (sommef*factureClient.getTva())/100;
 		            prixttc= sommef+tva;
 		            	PdfPCell prixht = new PdfPCell(new Phrase((String.valueOf(sommef))));
 		            	prixht.setPaddingLeft(4);
@@ -231,19 +234,29 @@ public class PDFGenerator {
 		          document.add(paracaractere);
 		          
 		          Font blueFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, new CMYKColor(255, 0, 0, 0));
-		          Paragraph paratotal = new Paragraph( ""+ FrenchNumberToWords.convert(prixttc), blueFont);
+		          Paragraph paratotal = new Paragraph( ""+ FrenchNumberToWords.convert(prixttc)+" "+"Dirhams", blueFont);
 		          paratotal.setAlignment(Element.ALIGN_CENTER);
 		          document.add(paratotal);
 		          document.add(Chunk.NEWLINE);
 		          document.add(Chunk.NEWLINE);
+		          
 		          Chunk linebreak = new Chunk(new DottedLineSeparator());
 		          document.add(linebreak);
+		          document.add(Chunk.NEWLINE);
+		          document.add(Chunk.NEWLINE);
 		          
+		          for(Societe societe : societes) {
 		         
-		          Paragraph footer = new Paragraph( "OPEN ITC sarl", blueFont);
+		          Paragraph footer = new Paragraph( ""+societe.getTitreFrancais(), blueFont);
 		          footer.setAlignment(Element.ALIGN_CENTER);
 		          document.add(footer);
 		          document.add(Chunk.NEWLINE);
+		          Font fontfooter = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+		          Paragraph parafooterinfo = new Paragraph( "ICE :"+societe.getIcen()+"       "+"IF :"+societe.getIfData()+"       "+"PATENTE :" +societe.getPatente() , fontfooter);
+		          parafooterinfo.setAlignment(Element.ALIGN_CENTER);
+		          document.add(parafooterinfo);
+		          document.add(Chunk.NEWLINE);
+		          }
 	            document.close();
 	            
 		           

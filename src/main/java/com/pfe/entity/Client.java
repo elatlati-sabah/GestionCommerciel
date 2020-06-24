@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,8 +30,10 @@ public class Client {
 	private String email;
 	@Column
 	private String nomContact;
-	@OneToMany(mappedBy="client")
-	private List<Facture> facture = new ArrayList<Facture>();
+	
+	@OneToMany(mappedBy="client",fetch = FetchType.EAGER)
+	private List<Facture> factures = new ArrayList<Facture>();
+	
 	@OneToMany(mappedBy="devisclient")
 	private List<Devis> devis = new ArrayList<Devis>();
 	
@@ -78,10 +81,10 @@ public class Client {
 		this.nomContact = nomContact;
 	}
 	public List<Facture> getFacture() {
-		return facture;
+		return factures;
 	}
 	public void setFacture(List<Facture> facture) {
-		this.facture = facture;
+		this.factures = facture;
 	}
 
 	public long getId_client() {
@@ -110,7 +113,7 @@ public class Client {
 		this.ice = ice;
 		this.email = email;
 		this.nomContact = nomContact;
-		this.facture = facture;
+		this.factures = facture;
 		this.devis = devis;
 	}
 

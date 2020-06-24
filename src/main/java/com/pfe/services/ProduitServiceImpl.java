@@ -28,7 +28,7 @@ public class ProduitServiceImpl implements ProduitService {
 			Produit ProduitUpdate = ProduitDb.get();
 			//ProduitUpdate.setIdProduit(produit.getId_produit());
 			ProduitUpdate.setCodeProduit(produit.getCodeProduit());
-			ProduitUpdate.setDesignation(produit.getDesignation());;
+			ProduitUpdate.setDesignation(produit.getDesignation());
 			ProduitUpdate.setInitialStock(produit.getInitialStock());
 			ProduitUpdate.setPrixAchat(produit.getPrixAchat());
 			ProduitUpdate.setLibelle(produit.getLibelle());

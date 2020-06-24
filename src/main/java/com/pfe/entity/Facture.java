@@ -30,11 +30,14 @@ public class Facture {
 	private int tva;
 	@Column
 	private int factureCounter;
-	@OneToMany(mappedBy="facture")
+	
+	@OneToMany(mappedBy="facture", fetch = FetchType.EAGER)
 	private List<DetailsFacture> detailsfactures = new ArrayList<DetailsFacture>();
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_client")
 	private Client client;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_produit")
 	private Produit produitfact;
