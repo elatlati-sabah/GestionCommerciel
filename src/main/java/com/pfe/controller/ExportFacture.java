@@ -37,6 +37,8 @@ public class ExportFacture {
 	
 	@Autowired
    FactureServiceImpl factureService;
+
+	private long idFacture;
 	
     @GetMapping(value = "/facture",
             produces = MediaType.APPLICATION_PDF_VALUE)
@@ -44,7 +46,7 @@ public class ExportFacture {
         List<Produit> produits = (List<Produit>) produit.findAll();
         Facture factureClient = new Facture();
         List<Societe> societes = (List<Societe>) societe.findAll();
-        long idFacture = 1;
+        
 		factureClient = factureService.getFactureById(idFacture);
         ByteArrayInputStream bis = PDFGenerator.facturePDFReport(produits,factureClient,societes);
  
