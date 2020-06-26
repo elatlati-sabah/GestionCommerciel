@@ -9,8 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="client")
 public class Client {
@@ -36,6 +40,11 @@ public class Client {
 	
 	@OneToMany(mappedBy="devisclient")
 	private List<Devis> devis = new ArrayList<Devis>();
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_versement")
+	private Versement versementClient ;
 	
 	public long getIdClient() {
 		return id_client;
@@ -119,6 +128,22 @@ public class Client {
 
 	public Client() {
 		
+	}
+
+	public List<Facture> getFactures() {
+		return factures;
+	}
+
+	public void setFactures(List<Facture> factures) {
+		this.factures = factures;
+	}
+
+	public Versement getVersement() {
+		return versementClient;
+	}
+
+	public void setVersement(Versement versement) {
+		this.versementClient = versement;
 	}
 	
 	

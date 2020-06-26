@@ -14,14 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pfe.entity.Client;
 import com.pfe.entity.Facture;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
+import com.pfe.entity.Versement;
 import com.pfe.repository.FactureRepository;
 import com.pfe.repository.ProduitRepository;
 import com.pfe.repository.SocieteRepository;
+import com.pfe.repository.VersementRepository;
+import com.pfe.services.ClientServiceImpl;
 import com.pfe.services.FactureServiceImpl;
 import com.pfe.services.PDFGenerator;
+import com.pfe.services.VersementServiceImpl;
 
 
 
@@ -38,17 +43,24 @@ public class ExportFacture {
 	@Autowired
    FactureServiceImpl factureService;
 
+	@Autowired
+	   ClientServiceImpl clientService;
+	@Autowired
+	   VersementServiceImpl vesrementService;
+	
 	private long idFacture;
+	private long idVersement;
 	
     @GetMapping(value = "/facture",
             produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> customersReport() throws IOException {
         List<Produit> produits = (List<Produit>) produit.findAll();
         Facture factureClient = new Facture();
-        List<Societe> societes = (List<Societe>) societe.findAll();
-        
 		factureClient = factureService.getFactureById(idFacture);
-        ByteArrayInputStream bis = PDFGenerator.facturePDFReport(produits,factureClient,societes);
+		List<Societe> societes = (List<Societe>) societe.findAll();
+		Versement versementClient = new Versement();
+		versementClient = vesrementService.getVersementById(idVersement);
+        ByteArrayInputStream bis = PDFGenerator.facturePDFReport(produits,factureClient,societes,versementClient);
  
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=facture.pdf");

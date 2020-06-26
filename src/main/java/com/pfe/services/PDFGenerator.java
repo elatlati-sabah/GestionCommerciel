@@ -4,15 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.apache.poi.ss.formula.eval.StringValueEval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringValueResolver;
+
 
 import com.github.royken.converter.FrenchNumberToWords;
 import com.itextpdf.text.BaseColor;
@@ -36,15 +35,19 @@ import com.pfe.entity.Facture;
 import com.pfe.entity.Fournisseur;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
+import com.pfe.entity.Versement;
 
 public class PDFGenerator {
 	
 	private static int sommef;
 	private static int tva;
 	private static int prixttc;
+	private static int montant;
+	private static int montantf;
+	private static String type;
 	private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
 	  
-	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits, Facture factureClient, List<Societe> societes) {
+	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits, Facture factureClient, List<Societe> societes, Versement versementClient) {
 	    Document document = new Document();
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        
@@ -58,7 +61,6 @@ public class PDFGenerator {
 	          Paragraph para = new Paragraph( ""+societe.getTitreFrancais(), font);
 	          para.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(para);
-	          document.add(Chunk.NEWLINE);
 	          //informations societe
 	          Font fontadd = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
 	          Paragraph paraadd = new Paragraph( "Adresse :"+societe.getAdresseFrancais(), fontadd);
@@ -76,7 +78,6 @@ public class PDFGenerator {
 	          Paragraph paratel2 = new Paragraph( "Téléphone2 :"+societe.getTelephone2(), font);
 	          paratel2.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paratel2);
-	          document.add(Chunk.NEWLINE);
 	          Chunk linebreak1 = new Chunk(new DottedLineSeparator());
 	          document.add(linebreak1);
 	          }
@@ -94,7 +95,7 @@ public class PDFGenerator {
 	          Paragraph parainfo = new Paragraph( "Informations du client:", font);
 	          parainfo.setAlignment(Element.ALIGN_LEFT);
 	          document.add(parainfo);
-	          document.add(Chunk.NEWLINE);
+	      
 	          Client client = new Client();
 	          Paragraph paraclient = new Paragraph( "Client:"+factureClient.getClient().getId_client(), font);
 	          paraclient.setAlignment(Element.ALIGN_LEFT);
@@ -108,7 +109,6 @@ public class PDFGenerator {
 	          Paragraph paraDate = new Paragraph( "Date:"+date.toGMTString(), font);
 	          paraDate.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paraDate);
-	          document.add(Chunk.NEWLINE);
 	          document.add(Chunk.NEWLINE);
 	         
 	        
@@ -238,11 +238,35 @@ public class PDFGenerator {
 		          paratotal.setAlignment(Element.ALIGN_CENTER);
 		          document.add(paratotal);
 		          document.add(Chunk.NEWLINE);
-		          document.add(Chunk.NEWLINE);
 		          
+		          Font fontReglement = FontFactory.getFont(FontFactory.HELVETICA, 16, BaseColor.BLACK);
+		          Paragraph parareglement = new Paragraph( "Réglement:", fontReglement);
+		          parareglement.setAlignment(Element.ALIGN_LEFT);
+		          document.add(parareglement);
+		   
+		          type = versementClient.getType_versement();
+			        if(type.equals("espece")) {
+			        	montant =prixttc-versementClient.getCheque();
+			        }else {
+			        	montant =prixttc-versementClient.getEspece();
+					}
+			        Font fontreg = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+			          Paragraph parafooterinfor = new Paragraph( "Type versement :"+versementClient.getType_versement(), fontreg);
+			          parafooterinfor.setAlignment(Element.ALIGN_LEFT);
+			          document.add(parafooterinfor);
+			          
+			          Font fontversement = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+			          Paragraph paraversement = new Paragraph( " montant payé :"+versementClient.getCheque()+" Dirhams" +" :" +FrenchNumberToWords.convert(versementClient.getCheque())+" "+"Dirhams", fontreg);
+			          paraversement.setAlignment(Element.ALIGN_LEFT);
+			          document.add(paraversement);
+			          
+			          Font fontreste = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+			          Paragraph parareste = new Paragraph( " montant resté :"+montant+" Dirhams" +" :" +FrenchNumberToWords.convert(montant)+" "+"Dirhams", fontreg);
+			          parareste.setAlignment(Element.ALIGN_LEFT);
+			          document.add(parareste);
+			        	
 		          Chunk linebreak = new Chunk(new DottedLineSeparator());
 		          document.add(linebreak);
-		          document.add(Chunk.NEWLINE);
 		          document.add(Chunk.NEWLINE);
 		          
 		          for(Societe societe : societes) {
@@ -257,6 +281,8 @@ public class PDFGenerator {
 		          document.add(parafooterinfo);
 		          document.add(Chunk.NEWLINE);
 		          }
+		         
+		         
 	            document.close();
 	            
 		           
