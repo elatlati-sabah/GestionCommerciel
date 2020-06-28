@@ -43,7 +43,7 @@ public class PDFGenerator {
 	private static int tva;
 	private static int prixttc;
 	private static int montant;
-	private static int montantf;
+	
 	private static String type;
 	private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
 	  
@@ -56,6 +56,17 @@ public class PDFGenerator {
 	          PdfWriter.getInstance(document, out);
 	            document.open();
 	          for(Societe societe : societes) {
+	        	//add logo to pdf file 
+		          try {
+					Image logo = Image.getInstance("open.jpg");
+					logo.setAbsolutePosition(60, 780);
+					logo.scaleAbsolute(70, 50);
+					document.add(logo);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	            // Add Text to PDF file ->
 	          Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
 	          Paragraph para = new Paragraph( ""+societe.getTitreFrancais(), font);
@@ -78,6 +89,7 @@ public class PDFGenerator {
 	          Paragraph paratel2 = new Paragraph( "Téléphone2 :"+societe.getTelephone2(), font);
 	          paratel2.setAlignment(Element.ALIGN_RIGHT);
 	          document.add(paratel2);
+	          document.add(Chunk.NEWLINE);
 	          Chunk linebreak1 = new Chunk(new DottedLineSeparator());
 	          document.add(linebreak1);
 	          }
@@ -95,7 +107,7 @@ public class PDFGenerator {
 	          Paragraph parainfo = new Paragraph( "Informations du client:", font);
 	          parainfo.setAlignment(Element.ALIGN_LEFT);
 	          document.add(parainfo);
-	      
+	          document.add(Chunk.NEWLINE);
 	          Client client = new Client();
 	          Paragraph paraclient = new Paragraph( "Client:"+factureClient.getClient().getId_client(), font);
 	          paraclient.setAlignment(Element.ALIGN_LEFT);
@@ -112,17 +124,7 @@ public class PDFGenerator {
 	          document.add(Chunk.NEWLINE);
 	         
 	        
-	          //add logo to pdf file 
-	          try {
-				Image logo = Image.getInstance("open.jpg");
-				logo.setAbsolutePosition(40, 780);
-				logo.scaleAbsolute(70, 50);
-				document.add(logo);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	          
 	        
 	       
 	          PdfPTable table = new PdfPTable(5);
@@ -137,34 +139,35 @@ public class PDFGenerator {
 	                  header.setPhrase(new Phrase(headerTitle, headFont));
 	                  table.addCell(header);
 	              });
-	            
-	            for (Produit produit : produits) {
-	            	PdfPCell idCell = new PdfPCell(new Phrase(produit.getCodeProduit()));
+	                       
+	            for (DetailsFacture factureDetails : factureClient.getDetailsfactures()) {
+	            	
+	            	PdfPCell idCell = new PdfPCell(new Phrase(factureDetails.getProduitDetails().getCodeProduit()));
 	              idCell.setPaddingLeft(4);
 	              idCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	              idCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	                table.addCell(idCell);
 	             
 	
-	                PdfPCell designationCell = new PdfPCell(new Phrase(produit.getDesignation()));
+	                PdfPCell designationCell = new PdfPCell(new Phrase(factureDetails.getProduitDetails().getDesignation()));
 	                designationCell.setPaddingLeft(4);
 	                designationCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	                designationCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 	                table.addCell(designationCell);
 	 
-	                PdfPCell quantiteCell = new PdfPCell(new Phrase(String.valueOf(produit.getQuantite())));
+	                PdfPCell quantiteCell = new PdfPCell(new Phrase(String.valueOf(factureDetails.getProduitDetails().getQuantite())));
 	                quantiteCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	                quantiteCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	                quantiteCell.setPaddingRight(4);
 	                table.addCell(quantiteCell);
 	                
-	                PdfPCell prixunitaireCell = new PdfPCell(new Phrase(String.valueOf(produit.getPrixUnitaire())));
+	                PdfPCell prixunitaireCell = new PdfPCell(new Phrase(String.valueOf(factureDetails.getProduitDetails().getPrixUnitaire())));
 	                prixunitaireCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	                prixunitaireCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	                prixunitaireCell.setPaddingRight(4);
 	                table.addCell(prixunitaireCell);
 	                
-	                PdfPCell prixtotalCell = new PdfPCell(new Phrase(String.valueOf(produit.getPrixUnitaire()*produit.getQuantite())));
+	                PdfPCell prixtotalCell = new PdfPCell(new Phrase(String.valueOf(factureDetails.getPrixTTC())));
 	                prixtotalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	                prixtotalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	                prixtotalCell.setPaddingRight(4);
@@ -190,15 +193,14 @@ public class PDFGenerator {
 		                  table2.addCell(header2);
 		              });
 		            //add fileds in rows table
-		            for (Produit produit : produits) {
+		            for (DetailsFacture factureDetails : factureClient.getDetailsfactures()) {
 		            	
-		            	 int somme =0; 
-	            			somme =produit.getPrixUnitaire()*produit.getQuantite();
+		            		int somme =0; 
+	            			somme =(int) factureDetails.getPrixTTC();
 	            			System.out.println(somme);
 
 	            			 sommef += somme ;
 	            			 
-	            		
 		            }
 		            System.out.println(sommef);
 		            tva = (sommef*factureClient.getTva())/100;
@@ -243,28 +245,37 @@ public class PDFGenerator {
 		          Paragraph parareglement = new Paragraph( "Réglement:", fontReglement);
 		          parareglement.setAlignment(Element.ALIGN_LEFT);
 		          document.add(parareglement);
-		   
+		          
+		          
+		          for (Versement factureVersement :factureClient.getVersementFacture()) {
+		        	  
+		         
 		          type = versementClient.getType_versement();
-			        if(type.equals("espece")) {
+			        if(type.equals("chéque")) {
 			        	montant =prixttc-versementClient.getCheque();
+			        	 Font fontversement = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+				          Paragraph paraversement = new Paragraph( " montant payé :"+factureVersement.getCheque()+" Dirhams" +" :" +FrenchNumberToWords.convert(versementClient.getCheque())+" "+"Dirhams", fontversement);
+				          paraversement.setAlignment(Element.ALIGN_LEFT);
+				          document.add(paraversement);
 			        }else {
 			        	montant =prixttc-versementClient.getEspece();
+			        	 Font fontversement = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
+				          Paragraph paraversement = new Paragraph( " montant payé :"+factureVersement.getEspece()+" Dirhams" +" :" +FrenchNumberToWords.convert(versementClient.getCheque())+" "+"Dirhams", fontversement);
+				          paraversement.setAlignment(Element.ALIGN_LEFT);
+				          document.add(paraversement);
 					}
 			        Font fontreg = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
-			          Paragraph parafooterinfor = new Paragraph( "Type versement :"+versementClient.getType_versement(), fontreg);
+			          Paragraph parafooterinfor = new Paragraph( "Type versement :"+factureVersement.getType_versement(), fontreg);
 			          parafooterinfor.setAlignment(Element.ALIGN_LEFT);
 			          document.add(parafooterinfor);
 			          
-			          Font fontversement = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
-			          Paragraph paraversement = new Paragraph( " montant payé :"+versementClient.getCheque()+" Dirhams" +" :" +FrenchNumberToWords.convert(versementClient.getCheque())+" "+"Dirhams", fontreg);
-			          paraversement.setAlignment(Element.ALIGN_LEFT);
-			          document.add(paraversement);
+			         
 			          
 			          Font fontreste = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
 			          Paragraph parareste = new Paragraph( " montant resté :"+montant+" Dirhams" +" :" +FrenchNumberToWords.convert(montant)+" "+"Dirhams", fontreg);
 			          parareste.setAlignment(Element.ALIGN_LEFT);
 			          document.add(parareste);
-			        	
+		          }	
 		          Chunk linebreak = new Chunk(new DottedLineSeparator());
 		          document.add(linebreak);
 		          document.add(Chunk.NEWLINE);

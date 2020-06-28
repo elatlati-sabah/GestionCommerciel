@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.entity.Client;
+import com.pfe.entity.DetailsFacture;
 import com.pfe.entity.Facture;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;

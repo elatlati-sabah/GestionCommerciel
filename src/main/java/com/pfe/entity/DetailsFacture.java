@@ -1,5 +1,6 @@
 package com.pfe.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="detailsfacture")
@@ -22,11 +25,13 @@ public class DetailsFacture {
 	@Column
 	private float prixTTC;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_produit")
-	private Produit produitfacture;
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_facture")
 	private Facture facture;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_produit_deatils", referencedColumnName = "id_produit")
+	private Produit produitDetails;
+	
 	public long getIdDetailsFacture() {
 		return idDetailsFacture;
 	}
@@ -45,12 +50,7 @@ public class DetailsFacture {
 	public void setPrixTTC(float prixTTC) {
 		this.prixTTC = prixTTC;
 	}
-	public Produit getProduitfacture() {
-		return produitfacture;
-	}
-	public void setProduitfacture(Produit produitfacture) {
-		this.produitfacture = produitfacture;
-	}
+	
 	public Facture getFacture() {
 		return facture;
 	}
@@ -64,10 +64,25 @@ public class DetailsFacture {
 		super();
 		this.idDetailsFacture = idDetailsFacture;
 		this.quantite = quantite;
-		this.prixTTC = prixTTC;
-		this.produitfacture = produitfacture;
+		this.prixTTC = quantite*produitfacture.getPrixUnitaire();
+		
 		this.facture = facture;
 	}
+	
+	
+	
+	public Produit getProduitDetails() {
+		return produitDetails;
+	}
+	public void setProduitDetails(Produit produitDetails) {
+		this.produitDetails = produitDetails;
+	}
+	@Override
+	public String toString() {
+		return "DetailsFacture [idDetailsFacture=" + idDetailsFacture + ", quantite=" + quantite + ", prixTTC="
+				+ prixTTC + ", facture=" + facture + "]";
+	}
+	
 	
 	
 }

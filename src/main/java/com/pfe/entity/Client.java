@@ -9,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -42,9 +40,11 @@ public class Client {
 	private List<Devis> devis = new ArrayList<Devis>();
 	
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_versement")
-	private Versement versementClient ;
+	@OneToMany(mappedBy = "versementClient")
+	List<Versement> versement =new ArrayList<Versement>();
+	
+	@OneToMany(mappedBy = "clientProduit")
+	List<Produit> produitClient = new ArrayList<Produit>();
 	
 	public long getIdClient() {
 		return id_client;
@@ -138,14 +138,29 @@ public class Client {
 		this.factures = factures;
 	}
 
-	public Versement getVersement() {
-		return versementClient;
+	public List<Versement> getVersement() {
+		return versement;
 	}
 
-	public void setVersement(Versement versement) {
-		this.versementClient = versement;
+	public void setVersement(List<Versement> versement) {
+		this.versement = versement;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Client [id_client=" + id_client + ", raisonSocial=" + raisonSocial + ", telephone=" + telephone
+				+ ", adresse=" + adresse + ", ice=" + ice + ", email=" + email + ", nomContact=" + nomContact
+				+ ", factures=" + factures + ", devis=" + devis + ", versement=" + versement + "]";
+	}
+
+	public List<Produit> getProduitClient() {
+		return produitClient;
+	}
+
+	public void setProduitClient(List<Produit> produitClient) {
+		this.produitClient = produitClient;
+	}
+
 	
 	
 	

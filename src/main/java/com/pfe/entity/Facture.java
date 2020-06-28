@@ -31,7 +31,7 @@ public class Facture {
 	@Column
 	private int factureCounter;
 	
-	@OneToMany(mappedBy="facture", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="facture")
 	private List<DetailsFacture> detailsfactures = new ArrayList<DetailsFacture>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -41,6 +41,10 @@ public class Facture {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_produit")
 	private Produit produitfact;
+	
+	@OneToMany(mappedBy="factureVersement", fetch = FetchType.EAGER)
+	private List<Versement> versementFacture = new ArrayList<Versement>();
+	
 	public long getId_facture() {
 		return id_facture;
 	}
@@ -71,12 +75,7 @@ public class Facture {
 	public void setFactureCounter(int factureCounter) {
 		this.factureCounter = factureCounter;
 	}
-	public List<DetailsFacture> getDetailsfacture() {
-		return detailsfactures;
-	}
-	public void setDetailsfacture(List<DetailsFacture> detailsfacture) {
-		this.detailsfactures = detailsfacture;
-	}
+	
 	public Client getClient() {
 		return client;
 	}
@@ -97,6 +96,7 @@ public class Facture {
 	public Facture() {
 		
 	}
+	
 	public List<DetailsFacture> getDetailsfactures() {
 		return detailsfactures;
 	}
@@ -108,6 +108,19 @@ public class Facture {
 	}
 	public void setProduitfact(Produit produitfact) {
 		this.produitfact = produitfact;
+	}
+	
+	public List<Versement> getVersementFacture() {
+		return versementFacture;
+	}
+	public void setVersementFacture(List<Versement> versementFacture) {
+		this.versementFacture = versementFacture;
+	}
+	@Override
+	public String toString() {
+		return "Facture [id_facture=" + id_facture + ", dateFacturation=" + dateFacturation + ", valider=" + valider
+				+ ", tva=" + tva + ", factureCounter=" + factureCounter + ", detailsfactures=" + detailsfactures
+				+ ", client=" + client + ", produitfact=" + produitfact + "]";
 	}
 	
 	

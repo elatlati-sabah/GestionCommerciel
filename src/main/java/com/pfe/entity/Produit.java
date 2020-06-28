@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,14 +47,18 @@ public class Produit {
 	@JoinColumn(name="id_categorie")
 	private Categorie categorie;
 	@JsonIgnore
-	@OneToMany(mappedBy = "produitfacture")
-	private List<DetailsFacture> detailfactures = new ArrayList<DetailsFacture>();
-	@JsonIgnore
 	@OneToMany(mappedBy = "produitdevis")
 	private List<DetailsDevis> detaildevis = new ArrayList<DetailsDevis>();
 	@JsonIgnore
 	@OneToMany(mappedBy = "produitfact")
 	private List<Facture> factures = new ArrayList<Facture>();
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_client")
+	Client clientProduit = new Client();
+	
+	@OneToOne(mappedBy = "produitDetails")
+    private DetailsFacture detailsfacture;
 	
 	public long getId_produit() {
 		return id_produit;
@@ -136,13 +141,7 @@ public class Produit {
 		this.categorie = categorie;
 	}
 
-	public List<DetailsFacture> getDetailfacture() {
-		return detailfactures;
-	}
-
-	public void setDetailfacture(List<DetailsFacture> detailfacture) {
-		this.detailfactures = detailfacture;
-	}
+	
 
 	public List<DetailsDevis> getDetaildevis() {
 		return detaildevis;
@@ -166,7 +165,7 @@ public class Produit {
 		this.prixAchat = prixAchat;
 		this.detailachat = detailachat;
 		this.categorie = categorie;
-		this.detailfactures = detailfacture;
+		
 		this.detaildevis = detaildevis;
 	}
 
@@ -174,22 +173,25 @@ public class Produit {
 		
 	}
 
+	
+	public DetailsFacture getDetailsfacture() {
+		return detailsfacture;
+	}
+
+	public void setDetailsfacture(DetailsFacture detailsfacture) {
+		this.detailsfacture = detailsfacture;
+	}
+
 	@Override
 	public String toString() {
 		return "Produit [id_produit=" + id_produit + ", libelle=" + libelle + ", designation=" + designation
 				+ ", prixUnitaire=" + prixUnitaire + ", codeProduit=" + codeProduit + ", initialStock=" + initialStock
 				+ ", quantite=" + quantite + ", prixAchat=" + prixAchat + ", detailachat=" + detailachat
-				+ ", categorie=" + categorie + ", detailfacture=" + detailfactures + ", detaildevis=" + detaildevis
+				+ ", categorie=" + categorie  + ", detaildevis=" + detaildevis
 				+ "]";
 	}
 
-	public List<DetailsFacture> getDetailfactures() {
-		return detailfactures;
-	}
-
-	public void setDetailfactures(List<DetailsFacture> detailfactures) {
-		this.detailfactures = detailfactures;
-	}
+	
 
 	public List<Facture> getFactures() {
 		return factures;
@@ -197,6 +199,14 @@ public class Produit {
 
 	public void setFactures(List<Facture> factures) {
 		this.factures = factures;
+	}
+
+	public Client getClientProduit() {
+		return clientProduit;
+	}
+
+	public void setClientProduit(Client clientProduit) {
+		this.clientProduit = clientProduit;
 	}
 
 	
