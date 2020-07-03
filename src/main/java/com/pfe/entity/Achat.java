@@ -24,7 +24,7 @@ public class Achat {
 	@Column
 	private long id_achat;
 	@Column
-	private Date dateAchat;
+	private Date dateAchat ;
 	@Column
 	private String refAchat;
 	@Column
@@ -95,6 +95,14 @@ public class Achat {
 
 	public void setDetailsachat(List<DetailsAchat> detailsachat) {
 		this.detailsachat = detailsachat;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Achat [id_achat=" + id_achat + ", dateAchat=" + dateAchat + ", refAchat=" + refAchat + ", valider="
+				+ valider + ", fournisseur=" + fournisseur + ", detailsachat=" + detailsachat + "]";
 	}
 	
 	

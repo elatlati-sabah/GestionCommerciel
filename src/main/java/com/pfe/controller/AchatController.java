@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.entity.Achat;
 import com.pfe.services.AchatService;
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AchatController {
 	@Autowired
