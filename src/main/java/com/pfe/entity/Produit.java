@@ -3,6 +3,7 @@ package com.pfe.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +54,7 @@ public class Produit {
 	@OneToMany(mappedBy = "produitfact")
 	private List<Facture> factures = new ArrayList<Facture>();
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="id_client")
 	Client clientProduit = new Client();
 	
