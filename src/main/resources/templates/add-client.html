@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Add User</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+</head>
+<body>
+	<div class="container my-5">
+	<h3> Add Produit</h3>
+		<div class="card">
+			<div class="card-body">
+				<div class="col-md-10">
+					<form action="#" th:action="@{/clients/add}"
+						th:object="${client}" method="post">
+						<div class="row">
+							<div class="form-group col-md-8">
+								<label for="raisonSocial" class="col-form-label">Raison Social</label> <input
+									type="text" th:field="*{raisonSocial}" class="form-control" id="raisonSocial"
+									placeholder="Raison Social"> <span
+									th:if="${#fields.hasErrors('raisonSocial')}" th:errors="*{raisonSocial}"
+									class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-8">
+								<label for="telephone" class="col-form-label">Telephone</label> <input
+									type="text" th:field="*{telephone}" class="form-control" id="telephone"
+									placeholder="Telephone"> <span
+									th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-8">
+								<label for="adresse" class="col-form-label">Adresse</label> <input
+									type="text" th:field="*{adresse}" class="form-control"
+									id="adresse" placeholder="adresse"> <span
+									th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}"
+									class="text-danger"></span>
+							</div>
+
+							
+
+									<div class="form-group col-md-8">
+								<label for="email" class="col-form-label">Email</label> <input
+									type="text" th:field="*{email}" class="form-control"
+									id="email" placeholder="email"> <span
+									th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-8">
+								<label for="nomContact" class="col-form-label">Prix d'achat</label> <input
+									type="text" th:field="*{nomContact}" class="form-control"
+									id="nomContact" placeholder="nomContact"> <span
+									th:if="${#fields.hasErrors('nomContact')}" th:errors="*{nomContact}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="col-md-6">
+								<input type="submit" class="btn btn-primary" value="Ajouter">
+							</div>
+
+							<div class="form-group col-md-8"></div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

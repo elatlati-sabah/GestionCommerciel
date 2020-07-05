@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Add User</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+</head>
+<body>
+	<div class="container my-5">
+	<h3> Add Client</h3>
+		<div class="card">
+			<div class="card-body">
+				<div class="col-md-10">
+					<form action="#" th:action="@{/clients/add}"
+						th:object="${client}" method="post">
+						<div class="row">
+							<div class="form-group col-md-8">
+								<label for="codeProduit" class="col-form-label">Code</label> <input
+									type="text" th:field="*{codeProduit}" class="form-control" id="codeProduit"
+									placeholder="codeProduit"> <span
+									th:if="${#fields.hasErrors('codeProduit')}" th:errors="*{codeProduit}"
+									class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-8">
+								<label for="designation" class="col-form-label">Designation</label> <input
+									type="text" th:field="*{designation}" class="form-control" id="designation"
+									placeholder="Designation"> <span
+									th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-8">
+								<label for="initialStock" class="col-form-label">Initial Stock</label> <input
+									type="text" th:field="*{initialStock}" class="form-control"
+									id="initialStock" placeholder="InitialStock"> <span
+									th:if="${#fields.hasErrors('initialStock')}" th:errors="*{initialStock}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-8">
+								<label for="libelle" class="col-form-label">Libelle</label> <input
+									type="text" th:field="*{libelle}" class="form-control"
+									id="libelle" placeholder="libelle"> <span
+									th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}"
+									class="text-danger"></span>
+							</div>
+
+									<div class="form-group col-md-8">
+								<label for="quantite" class="col-form-label">Quantité</label> <input
+									type="text" th:field="*{quantite}" class="form-control"
+									id="quantite" placeholder="quantite"> <span
+									th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="form-group col-md-8">
+								<label for="prixAchat" class="col-form-label">Prix d'achat</label> <input
+									type="int" th:field="*{prixAchat}" class="form-control"
+									id="prixAchat" placeholder="libelle"> <span
+									th:if="${#fields.hasErrors('prixAchat')}" th:errors="*{prixAchat}"
+									class="text-danger"></span>
+							</div>
+
+							<div class="col-md-6">
+								<input type="submit" class="btn btn-primary" value="Ajouter">
+							</div>
+
+							<div class="form-group col-md-8"></div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
