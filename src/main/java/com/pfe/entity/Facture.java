@@ -42,8 +42,8 @@ public class Facture {
 	@JoinColumn(name="id_produit")
 	private Produit produitfact;
 	
-	@OneToMany(mappedBy="factureVersement", fetch = FetchType.EAGER)
-	private List<Versement> versementFacture = new ArrayList<Versement>();
+	/*@OneToMany(mappedBy="factureVersement", fetch = FetchType.EAGER)
+	private List<Versement> versementFacture = new ArrayList<Versement>();*/
 	
 	public long getId_facture() {
 		return id_facture;
@@ -110,12 +110,12 @@ public class Facture {
 		this.produitfact = produitfact;
 	}
 	
-	public List<Versement> getVersementFacture() {
+	/*public List<Versement> getVersementFacture() {
 		return versementFacture;
 	}
 	public void setVersementFacture(List<Versement> versementFacture) {
 		this.versementFacture = versementFacture;
-	}
+	}*/
 	@Override
 	public String toString() {
 		return "Facture [id_facture=" + id_facture + ", dateFacturation=" + dateFacturation + ", valider=" + valider

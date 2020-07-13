@@ -24,11 +24,11 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client updateClient(Client client) {
-Optional<Client> ClientDb = this.clientRepository.findById((long) client.getIdClient());
+Optional<Client> ClientDb = this.clientRepository.findById((long) client.getId_client());
 		
 		if(ClientDb.isPresent()) {
 			Client ClientUpdate = ClientDb.get();
-			ClientUpdate.setIdClient(client.getIdClient());
+			ClientUpdate.setId_client(client.getId_client());
 			ClientUpdate.setAdresse(client.getAdresse());
 			ClientUpdate.setEmail(client.getEmail());
 			ClientUpdate.setIce(client.getIce());
@@ -39,7 +39,7 @@ Optional<Client> ClientDb = this.clientRepository.findById((long) client.getIdCl
 			return ClientUpdate;
 		}
 		else {
-			throw new ResourceNotFoundException("record not found with id :" +client.getIdClient());
+			throw new ResourceNotFoundException("record not found with id :" +client.getId_client());
 		}
 	}
 

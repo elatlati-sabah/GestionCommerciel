@@ -1,9 +1,7 @@
 html{
     height: 100%;
 }
- body{
-     background-color: black;
- }
+
 header {
     background-color: black;
     font-size: 35px;
@@ -36,7 +34,7 @@ article {
     padding: 20px;
     width: 70%;
     background-color: #f1f1f1;
-    height: 300px;
+    height: 900px;
 }
  
 section:after {

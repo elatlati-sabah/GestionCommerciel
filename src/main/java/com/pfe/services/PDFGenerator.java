@@ -35,7 +35,7 @@ import com.pfe.entity.Facture;
 import com.pfe.entity.Fournisseur;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
-import com.pfe.entity.Versement;
+
 
 public class PDFGenerator {
 	
@@ -47,7 +47,7 @@ public class PDFGenerator {
 	private static String type;
 	private static Logger logger = LoggerFactory.getLogger(PDFGenerator.class);
 	  
-	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits, Facture factureClient, List<Societe> societes, Versement versementClient) {
+	  public static ByteArrayInputStream facturePDFReport(List<Produit> produits, Facture factureClient, List<Societe> societes) {
 	    Document document = new Document();
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        
@@ -247,7 +247,7 @@ public class PDFGenerator {
 		          document.add(parareglement);
 		          
 		          
-		          for (Versement factureVersement :factureClient.getVersementFacture()) {
+		        /*  for (Versement factureVersement :factureClient.getVersementFacture()) {
 		        	  
 		         
 		          type = versementClient.getType_versement();
@@ -275,7 +275,7 @@ public class PDFGenerator {
 			          Paragraph parareste = new Paragraph( " montant resté :"+montant+" Dirhams" +" :" +FrenchNumberToWords.convert(montant)+" "+"Dirhams", fontreg);
 			          parareste.setAlignment(Element.ALIGN_LEFT);
 			          document.add(parareste);
-		          }	
+		          }	*/
 		          Chunk linebreak = new Chunk(new DottedLineSeparator());
 		          document.add(linebreak);
 		          document.add(Chunk.NEWLINE);

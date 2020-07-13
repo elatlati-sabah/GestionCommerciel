@@ -19,15 +19,13 @@ import com.pfe.entity.DetailsFacture;
 import com.pfe.entity.Facture;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
-import com.pfe.entity.Versement;
 import com.pfe.repository.FactureRepository;
 import com.pfe.repository.ProduitRepository;
 import com.pfe.repository.SocieteRepository;
-import com.pfe.repository.VersementRepository;
 import com.pfe.services.ClientServiceImpl;
 import com.pfe.services.FactureServiceImpl;
 import com.pfe.services.PDFGenerator;
-import com.pfe.services.VersementServiceImpl;
+
 
 
 
@@ -46,8 +44,8 @@ public class ExportFacture {
 
 	@Autowired
 	   ClientServiceImpl clientService;
-	@Autowired
-	   VersementServiceImpl vesrementService;
+	/*@Autowired
+	   VersementServiceImpl vesrementService;*/
 	
 	private long idFacture;
 	private long idVersement;
@@ -59,9 +57,9 @@ public class ExportFacture {
         Facture factureClient = new Facture();
 		factureClient = factureService.getFactureById(idFacture);
 		List<Societe> societes = (List<Societe>) societe.findAll();
-		Versement versementClient = new Versement();
-		versementClient = vesrementService.getVersementById(idVersement);
-        ByteArrayInputStream bis = PDFGenerator.facturePDFReport(produits,factureClient,societes,versementClient);
+		//Versement versementClient = new Versement();
+		//versementClient = vesrementService.getVersementById(idVersement);
+        ByteArrayInputStream bis = PDFGenerator.facturePDFReport(produits,factureClient,societes);
  
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=facture.pdf");

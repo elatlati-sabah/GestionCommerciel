@@ -1,50 +1,97 @@
 package com.pfe.controller;
 
-import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.Achat;
-import com.pfe.services.AchatService;
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
+import com.pfe.entity.Produit;
+import com.pfe.repository.AchatRepository;
+import com.pfe.repository.ClientRepository;
+import com.pfe.repository.DetailsAchatRepository;
+import com.pfe.repository.FournisseurRepository;
+import com.pfe.repository.ProduitRepository;
+
+@Controller
+@RequestMapping("/achats/")
 public class AchatController {
-	@Autowired
-	private AchatService achatService;
-	@GetMapping("/achats")
-	public ResponseEntity<List<Achat>> getAllAchat(){
-		return ResponseEntity.ok().body(achatService.getAllAchat());
-	}
-	@GetMapping("/achats/{id}")
-	public ResponseEntity<Achat> getAchatById(@PathVariable long id){
-		return ResponseEntity.ok().body(achatService.getAchatById(id));
-	}
-	@PostMapping("/createachat")
-	public ResponseEntity<Achat> createAchat(@RequestBody Achat achat){
-		return ResponseEntity.ok().body(this.achatService.createAchat(achat));
-	}
-
 	
-	@PutMapping("/updateachat/{id}")
-	public ResponseEntity<Achat> updateAchat(@PathVariable long id , @RequestBody Achat achat){
-		achat.setId_achat((int) id);
-		return ResponseEntity.ok().body(this.achatService.updateAchat(achat));
-	}
-	@DeleteMapping("/deleteachat/{id}")
-	public HttpStatus deleteAchat(@PathVariable long id){
-		this.achatService.deleteAchat(id);
-		return HttpStatus.OK;
+	private final AchatRepository achatRepository;
+
+	private final FournisseurRepository fournisseurRepository;
+	
+	private final DetailsAchatRepository detailsRepository;
+
+	@Autowired
+	
+	public AchatController(AchatRepository achatRepository, FournisseurRepository fournisseurRepository,
+			DetailsAchatRepository detailsRepository) {
+		super();
+		this.achatRepository = achatRepository;
+		this.fournisseurRepository = fournisseurRepository;
+		this.detailsRepository = detailsRepository;
 	}
 
 
+	@GetMapping("signup")
+	public String showSignUpForm(Achat achat) {
+		return "add-achat";
+	}
+
+	@GetMapping("list")
+	public String showUpdateForm(Model model) {
+		model.addAttribute("achats", achatRepository.findAll());
+		model.addAttribute("details", detailsRepository.findAll());
+		return "achat";
+	}
+
+	@PostMapping("add")
+	public String addAchat(@Valid Achat achat, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "add-achat";
+		}
+
+		achatRepository.save(achat);
+		return "redirect:list";
+	}
+
+	@GetMapping("edit/{id}")
+	public String showUpdateForm(@PathVariable("id") long id, Model model) {
+		Achat achat = achatRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+		model.addAttribute("achat", achat);
+		model.addAttribute("fournisseurs", fournisseurRepository.findAll());
+		model.addAttribute("details", detailsRepository.findAll());
+		return "update-achat";
+	}
+
+	@PostMapping("update/{id}")
+	public String updateAchat(@PathVariable("id") long id, @Valid Achat achat, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			achat.setId_achat(id);
+			return "update-achat";
+		}
+
+		achatRepository.save(achat);
+		model.addAttribute("achats", achatRepository.findAll());
+		return "index";
+	}
+
+	@GetMapping("delete/{id}")
+	public String deleteAchat(@PathVariable("id") long id, Model model) {
+		Achat achat = achatRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
+		achatRepository.delete(achat);
+		model.addAttribute("achats", achatRepository.findAll());
+		return "index";
+	}
+	
 }

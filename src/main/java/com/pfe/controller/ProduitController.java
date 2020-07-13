@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pfe.entity.Client;
 import com.pfe.entity.Produit;
+import com.pfe.repository.ClientRepository;
 import com.pfe.repository.ProduitRepository;
 
 
@@ -21,18 +23,23 @@ import com.pfe.repository.ProduitRepository;
 public class ProduitController {
 	private final ProduitRepository proRepository;
 
+	private final ClientRepository clientRepository;
+
+
 	@Autowired
-	public ProduitController(ProduitRepository proRepository) {
+	public ProduitController(ProduitRepository proRepository, ClientRepository clientRepository) {
 		super();
 		this.proRepository = proRepository;
+		this.clientRepository = clientRepository;
 	}
+
 
 	@GetMapping("signup")
 	public String showSignUpForm(Produit produit) {
 		return "add-produit";
 	}
 
-	
+
 
 	@GetMapping("list")
 	public String showUpdateForm(Model model) {
@@ -41,7 +48,7 @@ public class ProduitController {
 	}
 
 	@PostMapping("add")
-	public String addStudent(@Valid Produit produit, BindingResult result, Model model) {
+	public String addProduit(@Valid Produit produit, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "add-produit";
 		}
@@ -55,14 +62,16 @@ public class ProduitController {
 		Produit produit = proRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
 		model.addAttribute("produit", produit);
+		model.addAttribute("clients", clientRepository.findAll());
 		return "update-produit";
 	}
 
 	@PostMapping("update/{id}")
-	public String updateStudent(@PathVariable("id") long id, @Valid Produit produit, BindingResult result,
+	public String updateProduit(@PathVariable("id") long id, @Valid Produit produit, BindingResult result,
 			Model model) {
 		if (result.hasErrors()) {
 			produit.setId_produit(id);
+			
 			return "update-produit";
 		}
 
@@ -72,11 +81,11 @@ public class ProduitController {
 	}
 
 	@GetMapping("delete/{id}")
-	public String deleteStudent(@PathVariable("id") long id, Model model) {
+	public String deleteProduit(@PathVariable("id") long id, Model model) {
 		Produit produit = proRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
 		proRepository.delete(produit);
-		model.addAttribute("students", proRepository.findAll());
+		model.addAttribute("produits", proRepository.findAll());
 		return "index";
 	}
 	
