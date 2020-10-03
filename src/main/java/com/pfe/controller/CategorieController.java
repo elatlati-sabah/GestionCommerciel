@@ -1,51 +1,85 @@
 package com.pfe.controller;
 
-import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.Categorie;
-import com.pfe.services.CategorieService;
+import com.pfe.repository.CategorieRepository;
 
-@RestController
+@Controller
+@RequestMapping("/categories/")
 public class CategorieController {
+	
+	private final CategorieRepository catRepository;
+	
 	@Autowired
-	private CategorieService categorieService;
+	public CategorieController(CategorieRepository catRepository) {
+		super();
+		this.catRepository = catRepository;
+	}
 	
-	@GetMapping("/categories")
-	public ResponseEntity<List<Categorie>> getAllCategorie(){
-		return ResponseEntity.ok().body(categorieService.getAllCategorie());
-	}
-	@GetMapping("/categories/{id}")
-	public ResponseEntity<Categorie> getCategorieById(@PathVariable long id){
-		return ResponseEntity.ok().body(categorieService.getCategorieById(id));
-	}
-	@PostMapping("/createcategorie")
-	public ResponseEntity<Categorie> createCategorie(@RequestBody Categorie Categorie){
-		return ResponseEntity.ok().body(this.categorieService.createCategorie(Categorie));
+	
+	@GetMapping("signup")
+	public String showSignUpForm(Categorie categorie) {
+		return "add-categorie";
 	}
 
 	
-	@PutMapping("/updatecategorie/{id}")
-	public ResponseEntity<Categorie> updateCategorie(@PathVariable long id , @RequestBody Categorie Categorie){
-		Categorie.setId_categorie((int) id);
-		return ResponseEntity.ok().body(this.categorieService.updateCategorie(Categorie));
-	}
-	@DeleteMapping("/deletecategorie/{id}")
-	public HttpStatus deleteCategorie(@PathVariable long id){
-		this.categorieService.deleteCategorie(id);
-		return HttpStatus.OK;
+	@GetMapping("list")
+	public String showUpdateForm(Model model) {
+		model.addAttribute("categories", catRepository.findAll());
+		
+		return "categorie";
 	}
 
+	@PostMapping("add")
+	public String addCat(@Valid Categorie categorie, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "add-categorie";
+		}
+		catRepository.save(categorie);
+		
+		return "redirect:/fournisseurs/signup";
+	}
 
+	@GetMapping("edit/{id}")
+	public String showUpdateForm(@PathVariable("id") long id, Model model) {
+		Categorie categorie = catRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid categorie Id:" + id));
+		model.addAttribute("categorie", categorie);
+		return "update-categorie";
+	}
 
+	@PostMapping("update/{id}")
+	public String updateCat(@PathVariable("id") long id, @Valid Categorie categorie, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			categorie.setId_categorie(id);
+			return "update-categorie";
+		}
+
+		catRepository.save(categorie);
+		model.addAttribute("categories", catRepository.findAll());
+		return "categorie";
+	}
+
+	@GetMapping("delete/{id}")
+	public String deleteCat(@PathVariable("id") long id, Model model) {
+		Categorie categorie = catRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
+		catRepository.delete(categorie);
+		model.addAttribute("categories", catRepository.findAll());
+		return "categorie";
+	}
+	
+	
 }

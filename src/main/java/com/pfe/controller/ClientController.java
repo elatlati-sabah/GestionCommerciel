@@ -37,7 +37,7 @@ public class ClientController {
 	@GetMapping("list")
 	public String showUpdateForm(Model model) {
 		model.addAttribute("clients", clientRepository.findAll());
-		return "index-client";
+		return "client";
 	}
 
 	@PostMapping("add")
@@ -47,7 +47,7 @@ public class ClientController {
 		}
 
 		clientRepository.save(client);
-		return "redirect:list";
+		return "redirect:/produits/signup";
 	}
 
 	@GetMapping("edit/{id}")
@@ -68,7 +68,7 @@ public class ClientController {
 
 		clientRepository.save(client);
 		model.addAttribute("Clients", clientRepository.findAll());
-		return "index";
+		return "client";
 	}
 
 	@GetMapping("delete/{id}")
@@ -77,7 +77,7 @@ public class ClientController {
 				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
 		clientRepository.delete(client);
 		model.addAttribute("clients", clientRepository.findAll());
-		return "index";
+		return "client";
 	}
 	
 

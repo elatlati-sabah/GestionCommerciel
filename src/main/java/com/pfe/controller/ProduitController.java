@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.pfe.entity.Client;
 import com.pfe.entity.Produit;
 import com.pfe.repository.ClientRepository;
 import com.pfe.repository.ProduitRepository;
-
-
 
 @Controller
 @RequestMapping("/produits/")
@@ -54,7 +51,7 @@ public class ProduitController {
 		}
 
 		proRepository.save(produit);
-		return "redirect:list";
+		return "redirect:/factures/signup";
 	}
 
 	@GetMapping("edit/{id}")

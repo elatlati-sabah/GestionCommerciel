@@ -2,50 +2,83 @@ package com.pfe.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.DetailsDevis;
-import com.pfe.services.DetailsDevisService;
-
-@RestController
+import com.pfe.repository.DetailsDevisRepository;
+@Controller
+@RequestMapping("/detailsdevis/")
 public class DetailsDevisController {
+	
+	private final DetailsDevisRepository detailsdevRepository;
+	
 	@Autowired
-	private DetailsDevisService detailsDevisService;
-	
-	@GetMapping("/detailsDeviss")
-	public ResponseEntity<List<DetailsDevis>> getAllDetailsDevis(){
-		return ResponseEntity.ok().body(detailsDevisService.getAllDetailsDevis());
+	public DetailsDevisController(DetailsDevisRepository detailsdevRepository) {
+		super();
+		this.detailsdevRepository = detailsdevRepository;
 	}
-	@GetMapping("/detailsDevis/{id}")
-	public ResponseEntity<DetailsDevis> getDetailsDevisById(@PathVariable long id){
-		return ResponseEntity.ok().body(detailsDevisService.getDetailsDevisById(id));
-	}
-	@PostMapping("/createDetailsDevis")
-	public ResponseEntity<DetailsDevis> createDetailsDevis(@RequestBody DetailsDevis DetailsDevis){
-		return ResponseEntity.ok().body(this.detailsDevisService.createDetailsDevis(DetailsDevis));
+
+	@GetMapping("signup")
+	public String showSignUpForm(DetailsDevis detdevis) {
+		return "add-detdevis";
 	}
 
 	
-	@PutMapping("/updateDetailsDevis/{id}")
-	public ResponseEntity<DetailsDevis> updateDetailsDevis(@PathVariable long id , @RequestBody DetailsDevis DetailsDevis){
-		DetailsDevis.setIdDetailsDevis((int) id);
-		return ResponseEntity.ok().body(this.detailsDevisService.updateDetailsDevis(DetailsDevis));
-	}
-	@DeleteMapping("/deleteDetailsDevis/{id}")
-	public HttpStatus deleteDetailsDevis(@PathVariable long id){
-		this.detailsDevisService.deleteDetailsDevis(id);
-		return HttpStatus.OK;
+
+	@GetMapping("list")
+	public String showUpdateForm(Model model) {
+		model.addAttribute("detdevis", detailsdevRepository.findAll());
+		
+		return "detdevis";
 	}
 
+	@PostMapping("add")
+	public String adddDetdevis(@Valid DetailsDevis detdevis, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "add-detdevis";
+		}
+		detailsdevRepository.save(detdevis);
+		
+		return "redirect:list";
+	}
 
+	@GetMapping("edit/{id}")
+	public String showUpdateForm(@PathVariable("id") long id, Model model) {
+		DetailsDevis detdevis = detailsdevRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+		model.addAttribute("detdevis", detdevis);
+		return "update-detdevis";
+	}
 
+	@PostMapping("update/{id}")
+	public String updateDetdevis(@PathVariable("id") long id, @Valid DetailsDevis detdevis, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			detdevis.setIdDetailsDevis(id);
+			return "update-detdevis";
+		}
+
+		detailsdevRepository.save(detdevis);
+		model.addAttribute("achats", detailsdevRepository.findAll());
+		return "detdevis";
+	}
+
+	@GetMapping("delete/{id}")
+	public String deleteDetdevis(@PathVariable("id") long id, Model model) {
+		DetailsDevis detdevis = detailsdevRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
+		detailsdevRepository.delete(detdevis);
+		model.addAttribute("detdevis", detailsdevRepository.findAll());
+		return "detdevis";
+	}
+	
 }

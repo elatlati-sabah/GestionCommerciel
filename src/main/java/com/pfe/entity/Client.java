@@ -121,7 +121,6 @@ public class Client {
 	/*public List<Versement> getVersement() {
 		return versement;
 	}
-
 	public void setVersement(List<Versement> versement) {
 		this.versement = versement;
 	}*/

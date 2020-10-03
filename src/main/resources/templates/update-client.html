@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Add User</title>
+<title>Modifier Client</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -13,75 +13,106 @@
 	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
 	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
 	crossorigin="anonymous">
-<!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/indexpage.css}" />
 </head>
 <body>
+	 <header th:fragment="header">
+		<a><img th:src="@{/images/logo.png}" style="width:100px;height:60px; position: relative; ;"></a> 
+        <a th:href="@{/fragments}">Fragments Index</a> |
+        <a th:href="@{/markup}">Markup inclussion</a> |
+        <a th:href="@{/params}">Fragment params</a> |
+      <a th:href="@{/login?logout}">Logout</a>
+			
+	</header>
+	<section>
+		 <nav >
+           <div class=" text-center">
+    			<div class="col-sm-12 btn bg-danger" >
+					<a href="/produits/list"><img th:src="@{/images/inventaireButton.png}" class="inventaire" style="width:100px;height:100px; margin-left:0px ;"></a> </br>
+    				<span class="text-light"><B>Inventaire</B></span>
+    			</div>
+    			<br /><br />
+    			<div class="col-sm-12 btn bg-success" >
+					<a href="/clients/list"><img th:src="@{/images/Purchase.png}" class="purchase" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+    				<span class="text-light"><B>Achat</B></span>
+    			</div>
+    			<br /><br />
+    			<div class="col-sm-12 btn bg-info" >
+					<a><img th:src="@{/images/invHistorique.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+    				<span class="text-light"><B>Factures</B></span>
+    			</div>
+				<br /><br />
+				<div class="col-sm-12 btn bg-info" >
+					<a href="/api/pdf/facture"><img th:src="@{/images/invoice.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+    				<span class="text-light"><B>Historique</B></span>
+    			</div>
+    			<br /><br />
+        </nav>
+<article>
 	<div class="container my-5">
-	<h3> Add Client</h3>
+	<h3> Modifier Client</h3>
 		<div class="card">
 			<div class="card-body">
-				<div class="col-md-10">
-					<form action="#" th:action="@{/clients/add}"
+				<div class="col-md-8">
+					<form action="#"
+						th:action="@{/clients/update/{id}(id=${client.id_client})}"
 						th:object="${client}" method="post">
 						<div class="row">
-							<div class="form-group col-md-8">
-								<label for="codeProduit" class="col-form-label">Code</label> <input
-									type="text" th:field="*{codeProduit}" class="form-control" id="codeProduit"
-									placeholder="codeProduit"> <span
-									th:if="${#fields.hasErrors('codeProduit')}" th:errors="*{codeProduit}"
+							<div class="form-group col-md-6">
+								<label for="ID" class="col-form-label">ID</label> <input
+									type="text" th:field="*{id_achat}" class="form-control" id="id_achat"
+									placeholder="ID d'achat"> <span
+									th:if="${#fields.hasErrors('id_achat')}" th:errors="*{id_achat}"
 									class="text-danger"></span>
 							</div>
 							<div class="form-group col-md-8">
-								<label for="designation" class="col-form-label">Designation</label> <input
-									type="text" th:field="*{designation}" class="form-control" id="designation"
-									placeholder="Designation"> <span
-									th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"
+								<label for="dateAchat" class="col-form-label">Date</label> <input
+									type="date" th:field="*{dateAchat}" class="form-control" id="dateAchat"
+									placeholder="Date"> <span
+									th:if="${#fields.hasErrors('dateAchat')}" th:errors="*{dateAchat}"
 									class="text-danger"></span>
 							</div>
-
 							<div class="form-group col-md-8">
-								<label for="initialStock" class="col-form-label">Initial Stock</label> <input
-									type="text" th:field="*{initialStock}" class="form-control"
-									id="initialStock" placeholder="InitialStock"> <span
-									th:if="${#fields.hasErrors('initialStock')}" th:errors="*{initialStock}"
-									class="text-danger"></span>
-							</div>
-
-							<div class="form-group col-md-8">
-								<label for="libelle" class="col-form-label">Libelle</label> <input
-									type="text" th:field="*{libelle}" class="form-control"
-									id="libelle" placeholder="libelle"> <span
-									th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}"
-									class="text-danger"></span>
-							</div>
-
-									<div class="form-group col-md-8">
-								<label for="quantite" class="col-form-label">Quantité</label> <input
-									type="text" th:field="*{quantite}" class="form-control"
-									id="quantite" placeholder="quantite"> <span
-									th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"
+								<label for="refAchat" class="col-form-label">Ref achat</label> <input
+									type="text" th:field="*{refAchat}" class="form-control"
+									id="refAchat" placeholder="Ref achat"> <span
+									th:if="${#fields.hasErrors('refAchat')}" th:errors="refAchat"
 									class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-8">
-								<label for="prixAchat" class="col-form-label">Prix d'achat</label> <input
-									type="int" th:field="*{prixAchat}" class="form-control"
-									id="prixAchat" placeholder="libelle"> <span
-									th:if="${#fields.hasErrors('prixAchat')}" th:errors="*{prixAchat}"
+								<label for="valider" class="col-form-label">Valider</label> <input
+									type="text" th:field="*{valider}" class="form-control"
+									id="valider" placeholder="valider"> <span
+									th:if="${#fields.hasErrors('valider')}" th:errors="*{valider}"
 									class="text-danger"></span>
 							</div>
 
-							<div class="col-md-6">
-								<input type="submit" class="btn btn-primary" value="Ajouter">
+							<div class="form-group col-md-8">
+								<label for="quantite" class="col-form-label">quantite d'achat</label> <input
+									type="int" th:field="*{detailsachat[0].quantite}" th:value="*{detailsachat[0].quantite}"class="form-control"
+									id="prix" placeholder="Quantite">
 							</div>
+							
 
-							<div class="form-group col-md-8"></div>
+							<divclass="form-group col-md-8">
+							<label for="fournisseur" class="col-form-label">ID Fournisseur</label>
+							 <select th:field="*{fournisseur}" class="form-control">
+								<option th:each="fournisseur: ${fournisseurs}" th:value="${fournisseur.id_fournisseur}" th:text="${fournisseur.id_fournisseur}"></option>
+							</select>
+							</div>
+							
 
+							<div class="form-group col-md-8">
+								<input type="submit" class="btn btn-primary"
+									value="Modifier Achat">
+							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+	</article>
 </body>
 </html>

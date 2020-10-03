@@ -198,10 +198,12 @@ public class PDFGenerator {
 		            		int somme =0; 
 	            			somme =(int) factureDetails.getPrixTTC();
 	            			System.out.println(somme);
-
-	            			 sommef += somme ;
+	            			sommef += somme ;
+	            			 
 	            			 
 		            }
+		           
+					
 		            System.out.println(sommef);
 		            tva = (sommef*factureClient.getTva())/100;
 		            prixttc= sommef+tva;

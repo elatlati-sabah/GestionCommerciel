@@ -2,50 +2,91 @@ package com.pfe.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pfe.entity.Achat;
+import com.pfe.entity.DetailsAchat;
 import com.pfe.entity.DetailsFacture;
-import com.pfe.services.DetailsFactureService;
+import com.pfe.entity.Facture;
+import com.pfe.repository.AchatRepository;
+import com.pfe.repository.DetailsAchatRepository;
+import com.pfe.repository.DetailsFactureRepository;
+import com.pfe.repository.FactureRepository;
+import com.pfe.repository.FournisseurRepository;
 
-@RestController
+@Controller
+@RequestMapping("/detfactures/")
 public class DetailsFactureController {
+	
+	private final DetailsFactureRepository dtlsfactureRepo;
+	
 	@Autowired
-	private DetailsFactureService detailsFactureService;
+	public DetailsFactureController(DetailsFactureRepository dtlsfactureRepo) {
+		super();
+		this.dtlsfactureRepo = dtlsfactureRepo;
+	}
+
+	@GetMapping("signup")
+	public String showSignUpForm(DetailsFacture dtlsfacture) {
+		return "add-dtlsfacture";
+	}
+
+	@GetMapping("list")
+	public String showUpdateForm(Model model) {
+		model.addAttribute("dtlsFactures", dtlsfactureRepo.findAll());
+		
+		return "dtlsfacture";
+	}
+
+	@PostMapping("add")
+	public String addDtlsfacture(@Valid DetailsFacture dtlsfacture, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "add-dtlsfacture";
+		}
+		dtlsfactureRepo.save(dtlsfacture);
+		
+		return "redirect:list";
+	}
+
+	@GetMapping("edit/{id}")
+	public String showUpdateForm(@PathVariable("id") long id, Model model) {
+		DetailsFacture dtlsfacture = dtlsfactureRepo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid detailsFacture Id:" + id));
+		model.addAttribute("dtlsfacture", dtlsfacture);
+		return "update-dtlsfacture";
+	}
+
+	@PostMapping("update/{id}")
+	public String updateDtlsFacture(@PathVariable("id") long id, @Valid DetailsFacture dtlsfacture, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			dtlsfacture.setIdDetailsFacture(id);
+			return "update-achat";
+		}
+
+		dtlsfactureRepo.save(dtlsfacture);
+		model.addAttribute("dtlsFactures", dtlsfactureRepo.findAll());
+		return "dtlsfacture";
+	}
+
+	@GetMapping("delete/{id}")
+	public String deleteDtlsFacture(@PathVariable("id") long id, Model model) {
+		DetailsFacture dtlsfacture = dtlsfactureRepo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid details facture Id:" + id));
+		dtlsfactureRepo.delete(dtlsfacture);
+		model.addAttribute("dtlsFactues", dtlsfactureRepo.findAll());
+		return "dtlsfacture";
+	}
 	
-	@GetMapping("/detailsFactures")
-	public ResponseEntity<List<DetailsFacture>> getAllDetailsFacture(){
-		return ResponseEntity.ok().body(detailsFactureService.getAllDetailsFacture());
-	}
-	@GetMapping("/detailsFacture/{id}")
-	public ResponseEntity<DetailsFacture> getDetailsFactureById(@PathVariable long id){
-		return ResponseEntity.ok().body(detailsFactureService.getDetailsFactureById(id));
-	}
-	@PostMapping("/createdetailsFacture")
-	public ResponseEntity<DetailsFacture> createDetailsFacture(@RequestBody DetailsFacture DetailsFacture){
-		return ResponseEntity.ok().body(this.detailsFactureService.createDetailsFacture(DetailsFacture));
-	}
 
 	
-	@PutMapping("/updatedetailsFacture/{id}")
-	public ResponseEntity<DetailsFacture> updateDetailsFacture(@PathVariable long id , @RequestBody DetailsFacture DetailsFacture){
-		DetailsFacture.setIdDetailsFacture((int) id);
-		return ResponseEntity.ok().body(this.detailsFactureService.updateDetailsFacture(DetailsFacture));
-	}
-	@DeleteMapping("/deletedetailsFacture/{id}")
-	public HttpStatus deleteDetailsFacture(@PathVariable long id){
-		this.detailsFactureService.deleteDetailsFacture(id);
-		return HttpStatus.OK;
-	}
-
-
-
 }

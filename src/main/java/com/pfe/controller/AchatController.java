@@ -1,5 +1,7 @@
 package com.pfe.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.Achat;
+import com.pfe.entity.DetailsAchat;
+import com.pfe.entity.Fournisseur;
 import com.pfe.entity.Produit;
 import com.pfe.repository.AchatRepository;
 import com.pfe.repository.ClientRepository;
@@ -28,6 +32,8 @@ public class AchatController {
 	private final FournisseurRepository fournisseurRepository;
 	
 	private final DetailsAchatRepository detailsRepository;
+	
+	private List<DetailsAchat> details;
 
 	@Autowired
 	
@@ -49,6 +55,7 @@ public class AchatController {
 	public String showUpdateForm(Model model) {
 		model.addAttribute("achats", achatRepository.findAll());
 		model.addAttribute("details", detailsRepository.findAll());
+		
 		return "achat";
 	}
 
@@ -57,15 +64,15 @@ public class AchatController {
 		if (result.hasErrors()) {
 			return "add-achat";
 		}
-
 		achatRepository.save(achat);
-		return "redirect:list";
+		
+		return "redirect:/detailsachats/signup";
 	}
 
 	@GetMapping("edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Achat achat = achatRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException("Invalid Achat Id:" + id));
 		model.addAttribute("achat", achat);
 		model.addAttribute("fournisseurs", fournisseurRepository.findAll());
 		model.addAttribute("details", detailsRepository.findAll());
@@ -82,7 +89,7 @@ public class AchatController {
 
 		achatRepository.save(achat);
 		model.addAttribute("achats", achatRepository.findAll());
-		return "index";
+		return "achat";
 	}
 
 	@GetMapping("delete/{id}")
@@ -91,7 +98,7 @@ public class AchatController {
 				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
 		achatRepository.delete(achat);
 		model.addAttribute("achats", achatRepository.findAll());
-		return "index";
+		return "achat";
 	}
 	
 }
