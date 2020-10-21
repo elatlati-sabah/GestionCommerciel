@@ -18,8 +18,8 @@
 <body>
 	 <header th:fragment="header">
 		<a><img th:src="@{/images/logo.png}" style="width:100px;height:60px; position: relative; ;"></a> 
-      <a>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</a> <a th:href="@{/consulterCompte}" style="color: white;">Catégorie </a> |
-       <a th:href="@{/consulterCompte}" style="color: white;">Fournisseur </a> |
+      <a>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</a> <a th:href="@{/categories/list}" style="color: white;">Catégorie </a> |
+       <a th:href="@{/fournisseurs/list}" style="color: white;">Fournisseur </a> |
         <a th:href="@{/consulterCompte}" style="color: white;">Caisse </a> |
         <a th:href="@{/consulterCompte}" style="color: white;">Consultaion de compte</a> |
     	 <a th:href="@{/login?logout}" style="color: white;">Déconnecter</a></li>
@@ -40,16 +40,17 @@
     			</div>
     			<br /><br />
     			<div class="col-sm-12 btn bg-info" >
-					<a href="/clients/list"><img th:src="@{/images/invHistorique.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+					<a href="/factures/list"><img th:src="@{/images/invHistorique.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
     				<span class="text-light"><B>Factures</B></span>
     			</div>
 				<br /><br />
 				<div class="col-sm-12 btn bg-success" >
-					<a href="/api/pdf/facture"><img th:src="@{/images/client.png}" class="client" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+					<a href="/clients/list"><img th:src="@{/images/client.png}" class="client" style="width:100px;height:100px; margin-left:0px ;"></a><br />
     				<span class="text-light"><B>Clients</B></span>
     			</div>
     			<br /><br />
         </nav>
+ 
         <article>
 	<h3> Ajouter Client</h3>
 		<div class="card">
