@@ -47,7 +47,7 @@ public class ClientController {
 		}
 
 		clientRepository.save(client);
-		return "redirect:/produits/signup";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")

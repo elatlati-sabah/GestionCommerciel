@@ -71,68 +71,72 @@
     			</div>
     			<br /><br />
     			<div class="col-sm-12 btn bg-info" >
-					<a href="/clients/list"><img th:src="@{/images/invHistorique.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+					<a href="/api/pdf/facture"><img th:src="@{/images/invHistorique.png}" class="historique" style="width:100px;height:100px; margin-left:0px ;"></a><br />
     				<span class="text-light"><B>Factures</B></span>
     			</div>
 				<br /><br />
 				<div class="col-sm-12 btn bg-success" >
-					<a href="/api/pdf/facture"><img th:src="@{/images/client.png}" class="client" style="width:100px;height:100px; margin-left:0px ;"></a><br />
+					<a href="/clients/list"><img th:src="@{/images/client.png}" class="client" style="width:100px;height:100px; margin-left:0px ;"></a><br />
     				<span class="text-light"><B>Clients</B></span>
     			</div>
     			<br /><br />
         </nav>
-
-		<article>
-	<div class="container my-5">
-	<h3> Modifier Catégorie</h3>
+ 
+        <article>
+           <div class="container my-2">
 		<div class="card">
-			<div class="card-body">
-				<div class="col-md-8">
-					<form action="#"
-						th:action="@{/fournisseurs/update/{id}(id=${fournisseur.id_fournisseur})}"
-						th:object="${fournisseur}" method="post">
-						<div class="row">
-							<div class="form-group col-md-8">
-								<label for="nom" class="col-form-label" style="text-align: center;">Nom du fournisseur</label> <input 
-									type="text" th:field="*{nom}" class="form-control" id="nom"
-									placeholder="nom"> <span
-									th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"
-									class="text-danger"></span>
-							</div>
-							
-							<div class="form-group col-md-8">
-								<label for="telephone" class="col-form-label" style="text-align: center;">Téléphone</label> <input 
-									type="text" th:field="*{telephone}" class="form-control" id="telephone"
-									placeholder="telephone"> <span
-									th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"
-									class="text-danger"></span>
-							</div>
-							
-							<div class="form-group col-md-8">
-								<label for="adresse" class="col-form-label" style="text-align: center;">Adresse</label> <input 
-									type="text" th:field="*{adresse}" class="form-control" id="adresse"
-									placeholder="adresse"> <span
-									th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}"
-									class="text-danger"></span>
-							</div>
-							
-							<div class="form-group col-md-8">
-								<label for="identifiant" class="col-form-label" style="text-align: center;">Identifiant</label> <input 
-									type="text" th:field="*{identifiant}" class="form-control" id="identifiant"
-									placeholder="identifiant"> <span
-									th:if="${#fields.hasErrors('identifiant')}" th:errors="*{identifiant}"
-									class="text-danger"></span>
-							</div>
-							<div class="form-group col-md-8">
-								<input type="submit" class="btn btn-primary"
-									value="Modifier fournisseur">
-							</div>
+			<center><div class="card-body"></center>
+				<div th:switch="${factures}" class="container my-5">
+					
+						<!-- <div style="text-align: right; margin-bottom: 5px;">
+							<a th:href="@{/categories/signup}" class="btn btn-success" id="myBtn" role="button">+ Ajouter</a>
+						</div> -->
+						
+				<div class="col-md-10">
+						
+						<div th:case="*">
+							<table class="table table-striped table-responsive-md">
+								<thead >
+									<tr>
+										<th>Nom de contact</th>
+										<th>Factures</th>
+                                        <th>Devis</th>
+                                        <th>BL</th>
+										<th>Supprimer</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="facture : ${factures}">
+										<td th:text="${facture.client.getNomContact()}"></td>
+										
+							<td>
+							<a href="/api/pdf/facture" class="btn btn-sm btn-primary" role="button">Facture</a>
+							</td>
+							<td>
+							<a href="/api/pdf/devis" class=" btn btn-success btn-sm" role="button">Devis</a>
+							</td>
+							<td>
+							<a href="/api/pdf/bl" class="btn btn-info btn-sm" role="button">BL</a>
+							</td>
+							<td>
+										 <a th:href="@{/factures/delete/{id}(id=${facture.id_facture})}" class="btn btn-danger btn-sm" role="button">Supprimer</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-					</form>
+
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</article>
+        </article>
+    </section>
+ <!-- <footer>
+        <p>Footer</p>
+    </footer>-->
+  
+ 
 </body>
 </html>

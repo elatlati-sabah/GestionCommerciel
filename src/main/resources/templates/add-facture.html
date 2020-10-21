@@ -66,7 +66,23 @@
 									th:if="${#fields.hasErrors('dateFacturation')}" th:errors="*{dateFacturation}"
 									class="text-danger"></span>
 							</div>
-
+							
+							<div class="form-group col-md-8">
+								<label for="valider" class="col-form-label">Valider</label> <input
+									type="text" th:field="*{valider}" class="form-control" id="valider"
+									placeholder="valider"> <span
+									th:if="${#fields.hasErrors('valider')}" th:errors="*{valider}"
+									class="text-danger"></span>
+							</div>
+							
+							<div class="form-group col-md-8">
+								<label for="tva" class="col-form-label">TVA</label> <input
+									type="number" th:field="*{tva}" class="form-control" id="tva"
+									placeholder="tva"> <span
+									th:if="${#fields.hasErrors('tva')}" th:errors="*{tva}"
+									class="text-danger"></span>
+							</div>
+							
 
 							<div class="col-md-6">
 								<input th:href="@{/achats/list}" type="submit" class="btn btn-primary" value="Suivant">

@@ -4,14 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import com.github.royken.converter.FrenchNumberToWords;
 import com.itextpdf.text.BaseColor;
@@ -32,13 +30,10 @@ import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import com.pfe.entity.Client;
 import com.pfe.entity.DetailsFacture;
 import com.pfe.entity.Facture;
-import com.pfe.entity.Fournisseur;
 import com.pfe.entity.Produit;
 import com.pfe.entity.Societe;
 
-
-public class PDFGenerator {
-	
+public class PDFGbl {
 	private static int sommef;
 	private static int tva;
 	private static int prixttc;
@@ -96,7 +91,7 @@ public class PDFGenerator {
 	          	// Add facture fields 
 	          Font font = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.BLACK);
 	         
-		          Paragraph parafact = new Paragraph( "Facture N°:"+factureClient.getFactureCounter(), font);
+		          Paragraph parafact = new Paragraph( "BL N°:"+factureClient.getFactureCounter(), font);
 		          parafact.setAlignment(Element.ALIGN_LEFT);
 		          document.add(parafact);
 		          document.add(Chunk.NEWLINE);

@@ -46,6 +46,26 @@ public class Client {
 	@OneToMany(mappedBy = "clientProduit")
 	List<Produit> produitClient = new ArrayList<Produit>();
 
+	public Client() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Client(long id_client, String raisonSocial, String telephone, String adresse, String ice, String email,
+			String nomContact, List<Facture> factures, List<Devis> devis, List<Produit> produitClient) {
+		super();
+		this.id_client = id_client;
+		this.raisonSocial = raisonSocial;
+		this.telephone = telephone;
+		this.adresse = adresse;
+		this.ice = ice;
+		this.email = email;
+		this.nomContact = nomContact;
+		this.factures = factures;
+		this.devis = devis;
+		this.produitClient = produitClient;
+	}
+
 	public long getId_client() {
 		return id_client;
 	}
@@ -118,13 +138,6 @@ public class Client {
 		this.devis = devis;
 	}
 
-	/*public List<Versement> getVersement() {
-		return versement;
-	}
-	public void setVersement(List<Versement> versement) {
-		this.versement = versement;
-	}*/
-
 	public List<Produit> getProduitClient() {
 		return produitClient;
 	}
@@ -133,36 +146,12 @@ public class Client {
 		this.produitClient = produitClient;
 	}
 
-	public Client() {
-		
-	}
-
-	public Client(long id_client, String raisonSocial, String telephone, String adresse, String ice, String email,
-			String nomContact, List<Facture> factures, List<Devis> devis,
-			List<Produit> produitClient) {
-		super();
-		this.id_client = id_client;
-		this.raisonSocial = raisonSocial;
-		this.telephone = telephone;
-		this.adresse = adresse;
-		this.ice = ice;
-		this.email = email;
-		this.nomContact = nomContact;
-		this.factures = factures;
-		this.devis = devis;
-		//this.versement = versement;
-		this.produitClient = produitClient;
-	}
-
 	@Override
 	public String toString() {
 		return "Client [id_client=" + id_client + ", raisonSocial=" + raisonSocial + ", telephone=" + telephone
 				+ ", adresse=" + adresse + ", ice=" + ice + ", email=" + email + ", nomContact=" + nomContact
-				+ ", factures=" + factures + ", devis=" + devis + ",  produitClient="
-				+ produitClient + "]";
+				+ ", factures=" + factures + ", devis=" + devis + ", produitClient=" + produitClient + "]";
 	}
-	
-	
-	
+
 	
 }

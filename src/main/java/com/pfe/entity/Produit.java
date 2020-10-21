@@ -53,14 +53,40 @@ public class Produit {
 	@JsonIgnore
 	@OneToMany(mappedBy = "produitfact")
 	private List<Facture> factures = new ArrayList<Facture>();
-	
-	@ManyToOne(cascade = {CascadeType.ALL})
-	@JoinColumn(name="id_client")
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_client")
 	Client clientProduit = new Client();
 	
 	@OneToOne(mappedBy = "produitDetails")
     private DetailsFacture detailsfacture;
-	
+
+	public Produit() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Produit(long id_produit, String libelle, String designation, int prixUnitaire, String codeProduit,
+			int initialStock, int quantite, double prixAchat, List<DetailsAchat> detailachat, Categorie categorie,
+			List<DetailsDevis> detaildevis, List<Facture> factures, Client clientProduit,
+			DetailsFacture detailsfacture) {
+		super();
+		this.id_produit = id_produit;
+		this.libelle = libelle;
+		this.designation = designation;
+		this.prixUnitaire = prixUnitaire;
+		this.codeProduit = codeProduit;
+		this.initialStock = initialStock;
+		this.quantite = quantite;
+		this.prixAchat = prixAchat;
+		this.detailachat = detailachat;
+		this.categorie = categorie;
+		this.detaildevis = detaildevis;
+		this.factures = factures;
+		this.clientProduit = clientProduit;
+		this.detailsfacture = detailsfacture;
+	}
+
 	public long getId_produit() {
 		return id_produit;
 	}
@@ -100,7 +126,6 @@ public class Produit {
 	public void setCodeProduit(String codeProduit) {
 		this.codeProduit = codeProduit;
 	}
-
 
 	public int getInitialStock() {
 		return initialStock;
@@ -142,8 +167,6 @@ public class Produit {
 		this.categorie = categorie;
 	}
 
-	
-
 	public List<DetailsDevis> getDetaildevis() {
 		return detaildevis;
 	}
@@ -151,48 +174,6 @@ public class Produit {
 	public void setDetaildevis(List<DetailsDevis> detaildevis) {
 		this.detaildevis = detaildevis;
 	}
-
-	public Produit(long id_produit, String libelle, String designation, int prixUnitaire, String codeProduit,
-			Categorie idCategorie, int initialStock, int quantite, double prixAchat, List<DetailsAchat> detailachat,
-			Categorie categorie, List<DetailsFacture> detailfacture, List<DetailsDevis> detaildevis) {
-		super();
-		this.id_produit = id_produit;
-		this.libelle = libelle;
-		this.designation = designation;
-		this.prixUnitaire = prixUnitaire;
-		this.codeProduit = codeProduit;
-		this.initialStock = initialStock;
-		this.quantite = quantite;
-		this.prixAchat = prixAchat;
-		this.detailachat = detailachat;
-		this.categorie = categorie;
-		
-		this.detaildevis = detaildevis;
-	}
-
-	public Produit() {
-		
-	}
-
-	
-	public DetailsFacture getDetailsfacture() {
-		return detailsfacture;
-	}
-
-	public void setDetailsfacture(DetailsFacture detailsfacture) {
-		this.detailsfacture = detailsfacture;
-	}
-
-	@Override
-	public String toString() {
-		return "Produit [id_produit=" + id_produit + ", libelle=" + libelle + ", designation=" + designation
-				+ ", prixUnitaire=" + prixUnitaire + ", codeProduit=" + codeProduit + ", initialStock=" + initialStock
-				+ ", quantite=" + quantite + ", prixAchat=" + prixAchat + ", detailachat=" + detailachat
-				+ ", categorie=" + categorie  + ", detaildevis=" + detaildevis
-				+ "]";
-	}
-
-	
 
 	public List<Facture> getFactures() {
 		return factures;
@@ -210,7 +191,23 @@ public class Produit {
 		this.clientProduit = clientProduit;
 	}
 
+	public DetailsFacture getDetailsfacture() {
+		return detailsfacture;
+	}
+
+	public void setDetailsfacture(DetailsFacture detailsfacture) {
+		this.detailsfacture = detailsfacture;
+	}
+
+	@Override
+	public String toString() {
+		return "Produit [id_produit=" + id_produit + ", libelle=" + libelle + ", designation=" + designation
+				+ ", prixUnitaire=" + prixUnitaire + ", codeProduit=" + codeProduit + ", initialStock=" + initialStock
+				+ ", quantite=" + quantite + ", prixAchat=" + prixAchat + ", detailachat=" + detailachat
+				+ ", categorie=" + categorie + ", detaildevis=" + detaildevis + ", factures=" + factures
+				+ ", clientProduit=" + clientProduit + ", detailsfacture=" + detailsfacture + "]";
+	}
 	
-	
+
 	
 }

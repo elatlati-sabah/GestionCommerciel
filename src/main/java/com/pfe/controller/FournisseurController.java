@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.Achat;
+import com.pfe.entity.Categorie;
 import com.pfe.entity.DetailsAchat;
 import com.pfe.entity.Fournisseur;
 import com.pfe.repository.AchatRepository;
@@ -27,14 +28,14 @@ public class FournisseurController {
 	
 
 	private final FournisseurRepository fournisseurRepository;
-	private final AchatRepository achatRepository;
+	
 	
 	@Autowired
 
-	public FournisseurController(FournisseurRepository fournisseurRepository, AchatRepository achatRepository) {
+	public FournisseurController(FournisseurRepository fournisseurRepository) {
 		super();
 		this.fournisseurRepository = fournisseurRepository;
-		this.achatRepository = achatRepository;
+		
 	}
 
 	
@@ -49,7 +50,7 @@ public class FournisseurController {
 	@GetMapping("list")
 	public String showUpdateForm(Model model) {
 		model.addAttribute("fournisseurs", fournisseurRepository.findAll());
-		model.addAttribute("achats", achatRepository.findAll());
+		
 		
 		return "fournisseur";
 	}
@@ -61,19 +62,19 @@ public class FournisseurController {
 		}
 		fournisseurRepository.save(fournisseur);
 		
-		return "redirect:/clients/signup";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Fournisseur fournisseur = fournisseurRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("le fournisseur n'est pas existe Id:" + id));
-		model.addAttribute("fournisseurs", fournisseurRepository.findAll());
+				.orElseThrow(() -> new IllegalArgumentException("Invalid fournisseur Id:" + id));
+		model.addAttribute("fournisseur", fournisseur);
 		return "update-fournisseur";
 	}
 
 	@PostMapping("update/{id}")
-	public String updateFournisseur(@PathVariable("id") long id, @Valid Fournisseur fournisseur, BindingResult result,
+	public String updateCat(@PathVariable("id") long id, @Valid Fournisseur fournisseur, BindingResult result,
 			Model model) {
 		if (result.hasErrors()) {
 			fournisseur.setId_fournisseur(id);

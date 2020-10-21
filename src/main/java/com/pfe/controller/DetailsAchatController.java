@@ -59,7 +59,7 @@ public class DetailsAchatController {
 		}
 		detailsRepository.save(detailsachat);
 		
-		return "redirect:/achats/list";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfe.entity.Achat;
+import com.pfe.entity.Categorie;
 import com.pfe.entity.DetailsAchat;
 import com.pfe.entity.Fournisseur;
 import com.pfe.entity.Produit;
@@ -66,16 +67,14 @@ public class AchatController {
 		}
 		achatRepository.save(achat);
 		
-		return "redirect:/detailsachats/signup";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Achat achat = achatRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid Achat Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException("Invalid achat Id:" + id));
 		model.addAttribute("achat", achat);
-		model.addAttribute("fournisseurs", fournisseurRepository.findAll());
-		model.addAttribute("details", detailsRepository.findAll());
 		return "update-achat";
 	}
 
@@ -84,14 +83,13 @@ public class AchatController {
 			Model model) {
 		if (result.hasErrors()) {
 			achat.setId_achat(id);
-			return "update-achat";
+			return "update-categorie";
 		}
 
 		achatRepository.save(achat);
 		model.addAttribute("achats", achatRepository.findAll());
 		return "achat";
 	}
-
 	@GetMapping("delete/{id}")
 	public String deleteAchat(@PathVariable("id") long id, Model model) {
 		Achat achat = achatRepository.findById(id)

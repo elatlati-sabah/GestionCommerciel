@@ -15,27 +15,24 @@ import com.pfe.entity.Produit;
 import com.pfe.repository.ClientRepository;
 import com.pfe.repository.ProduitRepository;
 
+
 @Controller
 @RequestMapping("/produits/")
 public class ProduitController {
 	private final ProduitRepository proRepository;
 
-	private final ClientRepository clientRepository;
 
 
 	@Autowired
-	public ProduitController(ProduitRepository proRepository, ClientRepository clientRepository) {
+	public ProduitController(ProduitRepository proRepository) {
 		super();
 		this.proRepository = proRepository;
-		this.clientRepository = clientRepository;
 	}
-
 
 	@GetMapping("signup")
 	public String showSignUpForm(Produit produit) {
 		return "add-produit";
 	}
-
 
 
 	@GetMapping("list")
@@ -51,15 +48,14 @@ public class ProduitController {
 		}
 
 		proRepository.save(produit);
-		return "redirect:/factures/signup";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")
 	public String showUpdateForm(@PathVariable("id") long id, Model model) {
 		Produit produit = proRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException("Invalid produit Id:" + id));
 		model.addAttribute("produit", produit);
-		model.addAttribute("clients", clientRepository.findAll());
 		return "update-produit";
 	}
 
@@ -68,7 +64,6 @@ public class ProduitController {
 			Model model) {
 		if (result.hasErrors()) {
 			produit.setId_produit(id);
-			
 			return "update-produit";
 		}
 

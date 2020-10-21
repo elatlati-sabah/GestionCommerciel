@@ -48,7 +48,7 @@ public class CategorieController {
 		}
 		catRepository.save(categorie);
 		
-		return "redirect:/fournisseurs/signup";
+		return "redirect:list";
 	}
 
 	@GetMapping("edit/{id}")

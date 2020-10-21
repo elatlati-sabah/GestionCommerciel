@@ -26,7 +26,7 @@ public class ProduitServiceImpl implements ProduitService {
 		
 		if(ProduitDb.isPresent()) {
 			Produit ProduitUpdate = ProduitDb.get();
-			//ProduitUpdate.setIdProduit(produit.getId_produit());
+			ProduitUpdate.setId_produit(produit.getId_produit());
 			ProduitUpdate.setCodeProduit(produit.getCodeProduit());
 			ProduitUpdate.setDesignation(produit.getDesignation());
 			ProduitUpdate.setInitialStock(produit.getInitialStock());
@@ -44,7 +44,7 @@ public class ProduitServiceImpl implements ProduitService {
 
 	@Override
 	public List<Produit> getAllProduit() {
-		return this.produitRepository.findAll();
+		return (List<Produit>) this.produitRepository.findAll();
 	}
 
 	@Override
