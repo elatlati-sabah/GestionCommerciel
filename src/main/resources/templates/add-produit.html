@@ -108,9 +108,25 @@
 									th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"
 									class="text-danger"></span>
 							</div>
+							
+							<div class="form-group col-md-8">
+								<label for="prixAchat" class="col-form-label">Prix Achat</label> <input
+									type="text" th:field="*{prixAchat}" class="form-control"
+									id="prixAchat" placeholder="prixAchat"> <span
+									th:if="${#fields.hasErrors('prixAchat')}" th:errors="*{prixAchat}"
+									class="text-danger"></span>
+							</div>
+							
+							<div class="form-group col-md-8">
+								<label for="prixAchat" class="col-form-label">Prix Achat</label> <input
+									type="text" th:field="*{prixAchat}" class="form-control"
+									id="prixAchat" placeholder="prixAchat"> <span
+									th:if="${#fields.hasErrors('prixAchat')}" th:errors="*{prixAchat}"
+									class="text-danger"></span>
+							</div>
 
 							<div class="col-md-6">
-								<input th:href="@{/produits/list}" type="submit" class="btn btn-primary" value="Suivant">
+								<input th:href="@{/categories/list}" type="submit" class="btn btn-primary" value="Suivant">
 							</div>
 
 							<div class="form-group col-md-8"></div>

@@ -61,6 +61,13 @@
 						th:action="@{/achats/update/{id}(id=${achat.id_achat})}"
 						th:object="${achat}" method="post">
 						<div class="row">
+						<div class="form-group col-md-8">
+								<label for="id_achat" class="col-form-label"></label> <input
+									type="number" th:field="*{id_achat}" class="form-control" id="id_achat"
+									placeholder="id_achat"> <span
+									th:if="${#fields.hasErrors('id_achat')}" th:errors="*{id_achat}"
+									class="text-danger"></span>
+							</div>
 							<div class="form-group col-md-8">
 								<label for="dateAchat" class="col-form-label">Date</label> <input
 									type="date" th:field="*{dateAchat}" class="form-control" id="dateAchat"

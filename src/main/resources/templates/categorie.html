@@ -99,6 +99,7 @@
 									<tr>
 										<th>Code d'article</th>
 										<th>Libelle</th>
+										<th>Designation Produit</th>
                                         <th>Modifier</th>
 										<th>Supprimer</th>
 									</tr>
@@ -107,7 +108,7 @@
 									<tr th:each="categorie : ${categories}">
 										<td th:text="${categorie.id_categorie}"></td>
 										<td th:text="${categorie.libele}"></td>
-										
+										<td th:each="prd : ${categorie.produits}" th:text="${prd.getDesignation()}"></td>
 										<td><a th:href="@{/categories/edit/{id}(id=${categorie.id_categorie})}" class="btn btn-success btn-sm" role="button">Modifier</a>
 										</td>
 										<td>

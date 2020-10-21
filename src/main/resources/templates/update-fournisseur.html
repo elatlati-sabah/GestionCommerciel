@@ -93,6 +93,15 @@
 						th:action="@{/fournisseurs/update/{id}(id=${fournisseur.id_fournisseur})}"
 						th:object="${fournisseur}" method="post">
 						<div class="row">
+						
+						<div class="form-group col-md-8">
+								<label for="id_fournisseur" class="col-form-label" style="text-align: center;"></label> <input 
+									type="number" th:field="*{id_fournisseur}" class="form-control" id="id_fournisseur"
+									placeholder="id_fournisseur"> <span
+									th:if="${#fields.hasErrors('id_fournisseur')}" th:errors="*{id_fournisseur}"
+									class="text-danger"></span>
+							</div>
+							
 							<div class="form-group col-md-8">
 								<label for="nom" class="col-form-label" style="text-align: center;">Nom du fournisseur</label> <input 
 									type="text" th:field="*{nom}" class="form-control" id="nom"
