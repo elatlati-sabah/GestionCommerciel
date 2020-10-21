@@ -93,6 +93,14 @@
 						th:action="@{/produits/update/{id}(id=${produit.id_produit})}"
 						th:object="${produit}" method="post">
 						<div class="row">
+						<div class="form-group col-md-8">
+						
+								<label for="id_produit" class="col-form-label">Code Produit</label> <input
+									type="text" th:field="*{id_produit}" class="form-control" id="id_produit"
+									placeholder="id_produit"> <span
+									th:if="${#fields.hasErrors('id_produit')}" th:errors="*{id_produit}"
+									class="text-danger"></span>
+							</div>
 							<div class="form-group col-md-6">
 								<label for="CodeProduit" class="col-form-label">Code Produit</label> <input
 									type="text" th:field="*{CodeProduit}" class="form-control" id="CodeProduit"

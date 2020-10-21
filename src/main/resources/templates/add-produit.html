@@ -59,9 +59,10 @@
 					<form action="#" th:action="@{/produits/add}"
 						th:object="${produit}" method="post">
 						<div class="row">
+						
 						<div class="form-group col-md-8">
 						
-								<label for="raisonSocial" class="col-form-label">Code Produit</label> <input
+								<label for="codeProduit" class="col-form-label">Code Produit</label> <input
 									type="text" th:field="*{codeProduit}" class="form-control" id="codeProduit"
 									placeholder="codeProduit"> <span
 									th:if="${#fields.hasErrors('codeProduit')}" th:errors="*{codeProduit}"

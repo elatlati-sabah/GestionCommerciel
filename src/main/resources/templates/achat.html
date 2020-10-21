@@ -115,8 +115,8 @@
 										<td th:text="${achat.refAchat}"></td>
                                         <td th:text="${achat.valider}"></td>
                                        <!--   <td th:text="${achat.fournisseur.getId_fournisseur()}"></td>-->
-    									<td th:each="dtls : ${achat.detailsachat}" th:text="${dtls.quantite}"></td>
-										<td th:each="dtls : ${achat.detailsachat}" th:text="${dtls.prix}"></td>
+    									<td th:each="dtls : ${achat.detailsachat}" th:text="${dtls.getQuantite()}"></td>
+										<td th:each="dtls : ${achat.detailsachat}" th:text="${dtls.getPrix()}"></td>
 										<td><a th:href="@{/achats/edit/{id}(id=${achat.id_achat})}" class="btn btn-success btn-sm" role="button">Modifier</a>
 										</td>
 										<td>
